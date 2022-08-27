@@ -11,9 +11,6 @@ const JETTON = require("./contract/token/ft").default;
 const {BlockSubscription, InMemoryBlockStorage} = require("./providers/blockSubscription");
 const {SubscriptionContract} = require("./contract/subscription/index");
 const {Payments, PaymentChannel} = require("./contract/payments/index");
-const TransportWebUSB = require("@ledgerhq/hw-transport-webusb").default;
-const TransportWebHID = require("@ledgerhq/hw-transport-webhid").default;
-const BluetoothTransport = require("@ledgerhq/hw-transport-web-ble").default;
 const {Dns, DnsCollection, DnsItem} = require("./contract/dns").default;
 const version = '0.0.54';
 
@@ -85,12 +82,6 @@ TonWeb.LockupWallets = LockupWallets;
 TonWeb.SubscriptionContract = SubscriptionContract;
 TonWeb.BlockSubscription = BlockSubscription;
 TonWeb.InMemoryBlockStorage = InMemoryBlockStorage;
-TonWeb.ledger = {
-    TransportWebUSB,
-    TransportWebHID,
-    BluetoothTransport,
-    AppTon,
-};
 TonWeb.token = {
     nft: NFT,
     ft: JETTON,
