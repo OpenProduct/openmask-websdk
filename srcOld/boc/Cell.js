@@ -1,18 +1,20 @@
-import {
+const {BitString} = require("./BitString");
+const {
+    bytesToBase64,
     compareBytes,
     concatBytes,
     crc32c,
     hexToBytes,
     readNBytesUIntFromArray,
-    sha256
-} from "../utils/utils";
-import { BitString } from "./bitString";
+    sha256,
+    bytesToHex
+} = require("../utils");
 
 const reachBocMagicPrefix = hexToBytes('B5EE9C72');
 const leanBocMagicPrefix = hexToBytes('68ff65f3');
 const leanBocMagicPrefixCRC = hexToBytes('acc3a728');
 
-export class Cell {
+class Cell {
     constructor() {
         this.bits = new BitString(1023);
         this.refs = [];
@@ -293,7 +295,7 @@ export class Cell {
     }
 }
 
-export async function moveToTheEnd(indexHashmap, topologicalOrderArray, target) {
+async function moveToTheEnd(indexHashmap, topologicalOrderArray, target) {
     const targetIndex = indexHashmap[target];
     for (let h in indexHashmap) {
         if (indexHashmap[h] > targetIndex) {
@@ -314,7 +316,7 @@ export async function moveToTheEnd(indexHashmap, topologicalOrderArray, target) 
  * @param indexHashmap cellHash: Uint8Array -> cellIndex: number
  * @return {[[], {}]} topologicalOrderArray and indexHashmap
  */
- export async function treeWalk(cell, topologicalOrderArray, indexHashmap, parentHash = null) {
+async function treeWalk(cell, topologicalOrderArray, indexHashmap, parentHash = null) {
     const cellHash = await cell.hash();
     if (cellHash in indexHashmap) { // Duplication cell
         //it is possible that already seen cell is a children of more deep cell
@@ -337,7 +339,7 @@ export async function moveToTheEnd(indexHashmap, topologicalOrderArray, target) 
 }
 
 
-export function parseBocHeader(serializedBoc) {
+function parseBocHeader(serializedBoc) {
     // snake_case is used to match TON docs
     if (serializedBoc.length < 4 + 1)
         throw "Not enough bytes for magic prefix";
@@ -420,7 +422,7 @@ export function parseBocHeader(serializedBoc) {
     };
 }
 
-export function deserializeCellData(cellData, referenceIndexSize) {
+function deserializeCellData(cellData, referenceIndexSize) {
     if (cellData.length < 2)
         throw "Not enough bytes to encode cell descriptors";
     const d1 = cellData[0], d2 = cellData[1];
@@ -448,7 +450,7 @@ export function deserializeCellData(cellData, referenceIndexSize) {
  * @param serializedBoc  {string | Uint8Array} hex or bytearray
  * @return {Cell[]} root cells
  */
- export function deserializeBoc(serializedBoc) {
+function deserializeBoc(serializedBoc) {
     if (typeof (serializedBoc) == 'string') {
         serializedBoc = hexToBytes(serializedBoc);
     }
@@ -477,3 +479,4 @@ export function deserializeCellData(cellData, referenceIndexSize) {
     return root_cells;
 }
 
+module.exports = {Cell};
