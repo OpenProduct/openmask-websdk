@@ -1,4 +1,4 @@
-import { Pair } from './httpProviderUtils';
+import { Pair } from "./httpProviderUtils";
 export declare class HttpProvider {
     SHARD_ID_ALL: string;
     host: string;
@@ -10,7 +10,7 @@ export declare class HttpProvider {
      * @param options? {{apiKey: string}}
      */
     constructor(host: string, options?: {
-        apiKey: string;
+        apiKey?: string;
     });
     /**
      * @private
