@@ -213,7 +213,7 @@ export class Contract {
             },
             estimateFee: async () => {
                 const query = await queryPromise;
-                const serialized = query.code // deploy
+                const serialized = query.code && query.data // deploy
                     ? {
                         address: query.address.toString(true, true, false),
                         body: bytesToBase64(await query.body.toBoc(false)),

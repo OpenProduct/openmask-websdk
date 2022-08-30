@@ -94,6 +94,14 @@ export class HttpProvider {
         return this.send("getAddressBalance", { address: address });
     }
     /**
+     * Use this method to get seqno of a given address.
+     * @param address {string}
+     */
+    async getSeqno(address) {
+        const seqno = await this.call2(address, "seqno");
+        return seqno.toNumber();
+    }
+    /**
      * Use this method to send serialized boc file: fully packed and serialized external message.
      * @param base64 {string} base64 of boc bytes Cell.toBoc
      */

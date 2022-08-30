@@ -2,7 +2,22 @@ import BN from "bn.js";
 import { Cell } from "../../boc/cell";
 import HttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
-import { Contract, Options } from "../contract";
+import { Contract, ExternalMessage, Method, Options } from "../contract";
+export interface TransferParams {
+    secretKey: Uint8Array;
+    toAddress: Address | string;
+    amount: BN | number;
+    seqno: number;
+    payload: string | Uint8Array | Cell;
+    sendMode: number;
+    stateInit?: Cell;
+}
+export interface BaseMethods {
+    seqno: () => {
+        call: () => Promise<number>;
+    };
+    transfer: (params: TransferParams) => Method;
+}
 /**
  * Abstract standard wallet class
  */
@@ -31,33 +46,16 @@ export declare class WalletContract extends Contract {
      * @param secretKey  {Uint8Array} nacl.KeyPair.secretKey
      * @return {{address: Address, message: Cell, body: Cell, sateInit: Cell, code: Cell, data: Cell}}
      */
-    createInitExternalMessage(secretKey: Uint8Array): Promise<{
-        address: Address;
-        message: Cell;
-        body: Cell;
-        signingMessage: Cell;
-        stateInit: Cell;
-        code: Uint8Array | Cell;
-        data: Cell;
-    }>;
+    createInitExternalMessage(secretKey: Uint8Array): Promise<ExternalMessage>;
     /**
      * @protected
      * @param signingMessage {Cell}
      * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
      * @param seqno {number}
      * @param dummySignature?    {boolean}
-     * @return {Promise<{address: Address, signature: Uint8Array, message: Cell, cell: Cell, body: Cell, resultMessage: Cell}>}
+     * @return {Promise<ExternalMessage>}
      */
-    createExternalMessage(signingMessage: Cell, secretKey: Uint8Array, seqno: number, dummySignature?: boolean): Promise<{
-        address: Address;
-        message: Cell;
-        body: Cell;
-        signature: Uint8Array;
-        signingMessage: Cell;
-        stateInit: Cell | null;
-        code: Uint8Array | Cell | null;
-        data: Cell | null;
-    }>;
+    createExternalMessage(signingMessage: Cell, secretKey: Uint8Array, seqno: number, dummySignature?: boolean): Promise<ExternalMessage>;
     /**
      * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
      * @param address   {Address | string}
@@ -67,16 +65,7 @@ export declare class WalletContract extends Contract {
      * @param sendMode?  {number}
      * @param dummySignature?    {boolean}
      * @param stateInit? {Cell}
-     * @return {Promise<{address: Address, signature: Uint8Array, message: Cell, cell: Cell, body: Cell, resultMessage: Cell}>}
+     * @return {Promise<ExternalMessage>}
      */
-    createTransferMessage(secretKey: Uint8Array, address: Address | string, amount: BN | number, seqno: number, payload?: string | Uint8Array | Cell, sendMode?: number, dummySignature?: boolean, stateInit?: Cell | null): Promise<{
-        address: Address;
-        message: Cell;
-        body: Cell;
-        signature: Uint8Array;
-        signingMessage: Cell;
-        stateInit: Cell | null;
-        code: Uint8Array | Cell | null;
-        data: Cell | null;
-    }>;
+    createTransferMessage(secretKey: Uint8Array, address: Address | string, amount: BN | number, seqno: number, payload?: string | Uint8Array | Cell, sendMode?: number, dummySignature?: boolean, stateInit?: Cell | null): Promise<ExternalMessage>;
 }

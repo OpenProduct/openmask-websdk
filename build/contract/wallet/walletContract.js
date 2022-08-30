@@ -30,7 +30,7 @@ export class WalletContract extends Contract {
                         const address = await this.getAddress();
                         let n = null;
                         try {
-                            n = (await provider.call2(address.toString(), "seqno")).toNumber();
+                            n = provider.getSeqno(address.toString());
                         }
                         catch (e) { }
                         return n;
@@ -103,7 +103,7 @@ export class WalletContract extends Contract {
      * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
      * @param seqno {number}
      * @param dummySignature?    {boolean}
-     * @return {Promise<{address: Address, signature: Uint8Array, message: Cell, cell: Cell, body: Cell, resultMessage: Cell}>}
+     * @return {Promise<ExternalMessage>}
      */
     async createExternalMessage(signingMessage, secretKey, seqno, dummySignature = false) {
         const signature = dummySignature
@@ -146,7 +146,7 @@ export class WalletContract extends Contract {
      * @param sendMode?  {number}
      * @param dummySignature?    {boolean}
      * @param stateInit? {Cell}
-     * @return {Promise<{address: Address, signature: Uint8Array, message: Cell, cell: Cell, body: Cell, resultMessage: Cell}>}
+     * @return {Promise<ExternalMessage>}
      */
     async createTransferMessage(secretKey, address, amount, seqno, payload = "", sendMode = 3, dummySignature = false, stateInit = null) {
         let payloadCell = new Cell();

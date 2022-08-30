@@ -42,57 +42,21 @@ export declare class WalletV4ContractR2 extends WalletContract {
     /**
      * @param   params {{secretKey: Uint8Array, seqno: number, pluginWc: number, amount: BN, stateInit: Cell, body: Cell}}
      */
-    deployAndInstallPlugin(params: DeployAndInstallPlugin): Promise<{
-        address: Address;
-        message: Cell;
-        body: Cell;
-        signature: Uint8Array;
-        signingMessage: Cell;
-        stateInit: Cell | null;
-        code: Uint8Array | Cell | null;
-        data: Cell | null;
-    }>;
+    deployAndInstallPlugin(params: DeployAndInstallPlugin): Promise<import("../contract").ExternalMessage>;
     /**
      * @private
      * @param   params {{secretKey: Uint8Array, seqno: number, pluginAddress: string | Address, amount?: BN, queryId?: number}}
      * @param   isInstall {boolean} install or uninstall
      */
-    _setPlugin(params: PluginParams, isInstall: boolean): Promise<{
-        address: Address;
-        message: Cell;
-        body: Cell;
-        signature: Uint8Array;
-        signingMessage: Cell;
-        stateInit: Cell | null;
-        code: Uint8Array | Cell | null;
-        data: Cell | null;
-    }>;
+    _setPlugin(params: PluginParams, isInstall: boolean): Promise<import("../contract").ExternalMessage>;
     /**
      * @param   params {{secretKey: Uint8Array, seqno: number, pluginAddress: string | Address, amount?: BN, queryId?: number}}
      */
-    installPlugin(params: PluginParams): Promise<{
-        address: Address;
-        message: Cell;
-        body: Cell;
-        signature: Uint8Array;
-        signingMessage: Cell;
-        stateInit: Cell | null;
-        code: Uint8Array | Cell | null;
-        data: Cell | null;
-    }>;
+    installPlugin(params: PluginParams): Promise<import("../contract").ExternalMessage>;
     /**
      * @param   params {{secretKey: Uint8Array, seqno: number, pluginAddress: string | Address, amount?: BN, queryId?: number}}
      */
-    removePlugin(params: PluginParams): Promise<{
-        address: Address;
-        message: Cell;
-        body: Cell;
-        signature: Uint8Array;
-        signingMessage: Cell;
-        stateInit: Cell | null;
-        code: Uint8Array | Cell | null;
-        data: Cell | null;
-    }>;
+    removePlugin(params: PluginParams): Promise<import("../contract").ExternalMessage>;
     /**
      * @return {Promise<number>}
      */

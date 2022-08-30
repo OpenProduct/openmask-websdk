@@ -1,4 +1,12 @@
 import { Pair } from "./httpProviderUtils";
+export interface EstimateFee {
+    source_fees: {
+        in_fwd_fee: number;
+        storage_fee: number;
+        gas_fee: number;
+        fwd_fee: number;
+    };
+}
 export declare class HttpProvider {
     SHARD_ID_ALL: string;
     host: string;
@@ -56,6 +64,11 @@ export declare class HttpProvider {
      */
     getBalance(address: string): Promise<any>;
     /**
+     * Use this method to get seqno of a given address.
+     * @param address {string}
+     */
+    getSeqno(address: string): Promise<number>;
+    /**
      * Use this method to send serialized boc file: fully packed and serialized external message.
      * @param base64 {string} base64 of boc bytes Cell.toBoc
      */
@@ -70,7 +83,7 @@ export declare class HttpProvider {
      * @param query     object as described https://toncenter.com/api/test/v2/#estimateFee
      * @return fees object
      */
-    getEstimateFee<Payload>(query: Payload): Promise<any>;
+    getEstimateFee<Payload>(query: Payload): Promise<EstimateFee>;
     /**
      * Invoke get-method of smart contract
      * todo: think about throw error if result.exit_code !== 0 (the change breaks backward compatibility)

@@ -1,15 +1,32 @@
 import BN from "bn.js";
 import { Cell } from "../boc/cell";
-import HttpProvider from "../providers/httpProvider";
+import HttpProvider, { EstimateFee } from "../providers/httpProvider";
 import Address from "../utils/address";
 import { bytesToBase64, bytesToHex } from "../utils/utils";
 
+export interface ExternalMessage {
+  address: Address;
+  message: Cell;
+  body: Cell;
+  signature?: Uint8Array;
+  signingMessage?: Cell;
+  stateInit: Cell | null;
+  code: Cell | null;
+  data: Cell | null;
+}
+
 export type Options = {
-  code?: Cell | Uint8Array;
+  code?: Cell;
   address?: Address | string;
   wc?: number;
   [key: string]: any;
 };
+
+export interface Method {
+  getQuery: () => Promise<Cell>;
+  send: () => Promise<void>;
+  estimateFee: () => Promise<EstimateFee>;
+}
 
 export class Contract {
   provider: HttpProvider;
@@ -243,7 +260,10 @@ export class Contract {
     return commonMsgInfo;
   }
 
-  static createMethod(provider: HttpProvider, queryPromise: Promise<any>) {
+  static createMethod(
+    provider: HttpProvider,
+    queryPromise: Promise<ExternalMessage>
+  ): Method {
     return {
       getQuery: async () => {
         return (await queryPromise).message;
@@ -255,17 +275,18 @@ export class Contract {
       },
       estimateFee: async () => {
         const query = await queryPromise;
-        const serialized = query.code // deploy
-          ? {
-              address: query.address.toString(true, true, false),
-              body: bytesToBase64(await query.body.toBoc(false)),
-              init_code: bytesToBase64(await query.code.toBoc(false)),
-              init_data: bytesToBase64(await query.data.toBoc(false)),
-            }
-          : {
-              address: query.address.toString(true, true, true),
-              body: bytesToBase64(await query.body.toBoc(false)),
-            };
+        const serialized =
+          query.code && query.data // deploy
+            ? {
+                address: query.address.toString(true, true, false),
+                body: bytesToBase64(await query.body.toBoc(false)),
+                init_code: bytesToBase64(await query.code.toBoc(false)),
+                init_data: bytesToBase64(await query.data.toBoc(false)),
+              }
+            : {
+                address: query.address.toString(true, true, true),
+                body: bytesToBase64(await query.body.toBoc(false)),
+              };
 
         return provider.getEstimateFee(serialized);
       },

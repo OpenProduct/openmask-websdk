@@ -1,6 +1,16 @@
+import BN from "bn.js";
 import { HttpProviderUtils, Pair } from "./httpProviderUtils";
 
 const SHARD_ID_ALL = "-9223372036854775808"; // 0x8000000000000000
+
+export interface EstimateFee {
+  source_fees: {
+    in_fwd_fee: number;
+    storage_fee: number;
+    gas_fee: number;
+    fwd_fee: number;
+  };
+}
 
 export class HttpProvider {
   SHARD_ID_ALL = SHARD_ID_ALL;
@@ -113,6 +123,15 @@ export class HttpProvider {
   }
 
   /**
+   * Use this method to get seqno of a given address.
+   * @param address {string}
+   */
+  async getSeqno(address: string): Promise<number> {
+    const seqno: BN = await this.call2(address, "seqno");
+    return seqno.toNumber();
+  }
+
+  /**
    * Use this method to send serialized boc file: fully packed and serialized external message.
    * @param base64 {string} base64 of boc bytes Cell.toBoc
    */
@@ -133,7 +152,7 @@ export class HttpProvider {
    * @param query     object as described https://toncenter.com/api/test/v2/#estimateFee
    * @return fees object
    */
-  async getEstimateFee<Payload>(query: Payload) {
+  async getEstimateFee<Payload>(query: Payload): Promise<EstimateFee> {
     return this.send("estimateFee", query);
   }
 

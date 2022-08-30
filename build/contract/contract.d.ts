@@ -1,13 +1,28 @@
 import BN from "bn.js";
 import { Cell } from "../boc/cell";
-import HttpProvider from "../providers/httpProvider";
+import HttpProvider, { EstimateFee } from "../providers/httpProvider";
 import Address from "../utils/address";
+export interface ExternalMessage {
+    address: Address;
+    message: Cell;
+    body: Cell;
+    signature?: Uint8Array;
+    signingMessage?: Cell;
+    stateInit: Cell | null;
+    code: Cell | null;
+    data: Cell | null;
+}
 export declare type Options = {
-    code?: Cell | Uint8Array;
+    code?: Cell;
     address?: Address | string;
     wc?: number;
     [key: string]: any;
 };
+export interface Method {
+    getQuery: () => Promise<Cell>;
+    send: () => Promise<void>;
+    estimateFee: () => Promise<EstimateFee>;
+}
 export declare class Contract {
     provider: HttpProvider;
     options: Options;
@@ -26,7 +41,7 @@ export declare class Contract {
      * @private
      * @return {Cell} cell contains contact code
      */
-    createCodeCell(): Uint8Array | Cell;
+    createCodeCell(): Cell;
     /**
      * Method to override
      * @protected
@@ -40,7 +55,7 @@ export declare class Contract {
     createStateInit(): Promise<{
         stateInit: Cell;
         address: Address;
-        code: Uint8Array | Cell;
+        code: Cell;
         data: Cell;
     }>;
     /**
@@ -82,9 +97,5 @@ export declare class Contract {
      * @return {Cell}
      */
     static createCommonMsgInfo(header: Cell, stateInit?: Cell | null, body?: Cell | null): Cell;
-    static createMethod(provider: HttpProvider, queryPromise: Promise<any>): {
-        getQuery: () => Promise<any>;
-        send: () => Promise<any>;
-        estimateFee: () => Promise<any>;
-    };
+    static createMethod(provider: HttpProvider, queryPromise: Promise<ExternalMessage>): Method;
 }

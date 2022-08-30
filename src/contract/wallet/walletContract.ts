@@ -3,7 +3,22 @@ import nacl from "tweetnacl";
 import { Cell } from "../../boc/cell";
 import HttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
-import { Contract, Options } from "../contract";
+import { Contract, ExternalMessage, Method, Options } from "../contract";
+
+export interface TransferParams {
+  secretKey: Uint8Array;
+  toAddress: Address | string;
+  amount: BN | number;
+  seqno: number;
+  payload: string | Uint8Array | Cell;
+  sendMode: number;
+  stateInit?: Cell;
+}
+
+export interface BaseMethods {
+  seqno: () => { call: () => Promise<number> };
+  transfer: (params: TransferParams) => Method;
+}
 
 /**
  * Abstract standard wallet class
@@ -57,9 +72,7 @@ export class WalletContract extends Contract {
             const address = await this.getAddress();
             let n = null;
             try {
-              n = (
-                await provider.call2(address.toString(), "seqno")
-              ).toNumber();
+              n = provider.getSeqno(address.toString());
             } catch (e) {}
             return n;
           },
@@ -111,7 +124,9 @@ export class WalletContract extends Contract {
    * @param secretKey  {Uint8Array} nacl.KeyPair.secretKey
    * @return {{address: Address, message: Cell, body: Cell, sateInit: Cell, code: Cell, data: Cell}}
    */
-  async createInitExternalMessage(secretKey: Uint8Array) {
+  async createInitExternalMessage(
+    secretKey: Uint8Array
+  ): Promise<ExternalMessage> {
     if (!this.options.publicKey) {
       const keyPair = nacl.sign.keyPair.fromSecretKey(secretKey);
       this.options.publicKey = keyPair.publicKey;
@@ -153,14 +168,14 @@ export class WalletContract extends Contract {
    * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
    * @param seqno {number}
    * @param dummySignature?    {boolean}
-   * @return {Promise<{address: Address, signature: Uint8Array, message: Cell, cell: Cell, body: Cell, resultMessage: Cell}>}
+   * @return {Promise<ExternalMessage>}
    */
   async createExternalMessage(
     signingMessage: Cell,
     secretKey: Uint8Array,
     seqno: number,
     dummySignature = false
-  ) {
+  ): Promise<ExternalMessage> {
     const signature = dummySignature
       ? new Uint8Array(64)
       : nacl.sign.detached(await signingMessage.hash(), secretKey);
@@ -211,7 +226,7 @@ export class WalletContract extends Contract {
    * @param sendMode?  {number}
    * @param dummySignature?    {boolean}
    * @param stateInit? {Cell}
-   * @return {Promise<{address: Address, signature: Uint8Array, message: Cell, cell: Cell, body: Cell, resultMessage: Cell}>}
+   * @return {Promise<ExternalMessage>}
    */
   async createTransferMessage(
     secretKey: Uint8Array,
