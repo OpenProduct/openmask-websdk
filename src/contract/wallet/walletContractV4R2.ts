@@ -3,8 +3,8 @@ import { Cell } from "../../boc/cell";
 import HttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
 import { bytesToHex, toNano } from "../../utils/utils";
-import { Contract, Options } from "../contract";
-import { WalletContract } from "./walletContract";
+import { Contract, Method, Options } from "../contract";
+import { BaseMethods, WalletContract } from "./walletContract";
 
 interface DeployAndInstallPlugin {
   secretKey: Uint8Array;
@@ -23,7 +23,18 @@ interface PluginParams {
   queryId?: number;
 }
 
+export interface WalletV4R2Method extends BaseMethods {
+  getPublicKey: () => Promise<BN>;
+  deployAndInstallPlugin: (params: DeployAndInstallPlugin) => Method;
+  installPlugin: (params: PluginParams) => Method;
+  removePlugin: (params: PluginParams) => Method;
+  getWalletId: () => Promise<number>;
+  isPluginInstalled: (pluginAddress: string | Address) => Promise<boolean>;
+  getPluginsList: () => Promise<string[]>;
+}
+
 export class WalletV4ContractR2 extends WalletContract {
+  methods: WalletV4R2Method = {} as WalletV4R2Method;
   /**
    * @param provider    {HttpProvider}
    * @param options {any}
@@ -146,7 +157,7 @@ export class WalletV4ContractR2 extends WalletContract {
    */
   async getWalletId() {
     const myAddress = await this.getAddress();
-    const id = await this.provider.call2(
+    const id: BN = await this.provider.call2(
       myAddress.toString(),
       "get_subwallet_id"
     );
@@ -185,11 +196,11 @@ export class WalletV4ContractR2 extends WalletContract {
    * @return {Promise<string[]>} plugins addresses
    */
   async getPluginsList() {
-    const parseAddress = (tuple: [any, any]) =>
+    const parseAddress = (tuple: [BN, any]) =>
       tuple[0].toNumber() + ":" + tuple[1].toString(16);
 
     const myAddress = await this.getAddress();
-    const result = await this.provider.call2(
+    const result: [BN, any][] = await this.provider.call2(
       myAddress.toString(),
       "get_plugin_list"
     );

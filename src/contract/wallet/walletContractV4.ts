@@ -1,9 +1,15 @@
+import BN from "bn.js";
 import { Cell } from "../../boc/cell";
 import HttpProvider from "../../providers/httpProvider";
 import { Options } from "../contract";
-import { WalletContract } from "./walletContract";
+import { BaseMethods, WalletContract } from "./walletContract";
+
+export interface WalletV4R1Method extends BaseMethods {
+  getPublicKey: () => Promise<BN>;
+}
 
 export class WalletV4ContractR1 extends WalletContract {
+  methods: WalletV4R1Method = {} as WalletV4R1Method;
   /**
    * @param provider    {HttpProvider}
    * @param options {any}
@@ -16,7 +22,9 @@ export class WalletV4ContractR1 extends WalletContract {
     if (!this.options.walletId)
       this.options.walletId = 698983191 + this.options.wc!;
 
-    this.methods.getPublicKey = this.getPublicKey.bind(this);
+    if (this.methods) {
+      this.methods.getPublicKey = this.getPublicKey.bind(this);
+    }
   }
 
   getName() {

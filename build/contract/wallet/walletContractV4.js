@@ -1,6 +1,7 @@
 import { Cell } from "../../boc/cell";
 import { WalletContract } from "./walletContract";
 export class WalletV4ContractR1 extends WalletContract {
+    methods = {};
     /**
      * @param provider    {HttpProvider}
      * @param options {any}
@@ -10,7 +11,9 @@ export class WalletV4ContractR1 extends WalletContract {
         super(provider, options);
         if (!this.options.walletId)
             this.options.walletId = 698983191 + this.options.wc;
-        this.methods.getPublicKey = this.getPublicKey.bind(this);
+        if (this.methods) {
+            this.methods.getPublicKey = this.getPublicKey.bind(this);
+        }
     }
     getName() {
         return "v4R1";

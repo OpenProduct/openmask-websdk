@@ -14,7 +14,7 @@ export interface TransferParams {
 }
 export interface BaseMethods {
     seqno: () => {
-        call: () => Promise<number>;
+        call: () => Promise<number | null>;
     };
     transfer: (params: TransferParams) => Method;
 }
@@ -23,6 +23,7 @@ export interface BaseMethods {
  */
 export declare class WalletContract extends Contract {
     deploy: (secretKey: Uint8Array) => void;
+    methods: BaseMethods;
     /**
      * @param provider    {HttpProvider}
      * @param options?    {{code: Uint8Array, publicKey?: Uint8Array, address?: Address | string, wc?: number}}

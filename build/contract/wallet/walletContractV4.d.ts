@@ -1,8 +1,13 @@
+import BN from "bn.js";
 import { Cell } from "../../boc/cell";
 import HttpProvider from "../../providers/httpProvider";
 import { Options } from "../contract";
-import { WalletContract } from "./walletContract";
+import { BaseMethods, WalletContract } from "./walletContract";
+export interface WalletV4R1Method extends BaseMethods {
+    getPublicKey: () => Promise<BN>;
+}
 export declare class WalletV4ContractR1 extends WalletContract {
+    methods: WalletV4R1Method;
     /**
      * @param provider    {HttpProvider}
      * @param options {any}

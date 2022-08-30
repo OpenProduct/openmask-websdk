@@ -8,6 +8,7 @@ import { Contract } from "../contract";
  */
 export class WalletContract extends Contract {
     deploy;
+    methods;
     /**
      * @param provider    {HttpProvider}
      * @param options?    {{code: Uint8Array, publicKey?: Uint8Array, address?: Address | string, wc?: number}}

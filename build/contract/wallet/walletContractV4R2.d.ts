@@ -2,8 +2,8 @@ import BN from "bn.js";
 import { Cell } from "../../boc/cell";
 import HttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
-import { Options } from "../contract";
-import { WalletContract } from "./walletContract";
+import { Method, Options } from "../contract";
+import { BaseMethods, WalletContract } from "./walletContract";
 interface DeployAndInstallPlugin {
     secretKey: Uint8Array;
     seqno: number;
@@ -19,7 +19,17 @@ interface PluginParams {
     amount?: BN;
     queryId?: number;
 }
+export interface WalletV4R2Method extends BaseMethods {
+    getPublicKey: () => Promise<BN>;
+    deployAndInstallPlugin: (params: DeployAndInstallPlugin) => Method;
+    installPlugin: (params: PluginParams) => Method;
+    removePlugin: (params: PluginParams) => Method;
+    getWalletId: () => Promise<number>;
+    isPluginInstalled: (pluginAddress: string | Address) => Promise<boolean>;
+    getPluginsList: () => Promise<string[]>;
+}
 export declare class WalletV4ContractR2 extends WalletContract {
+    methods: WalletV4R2Method;
     /**
      * @param provider    {HttpProvider}
      * @param options {any}
@@ -60,7 +70,7 @@ export declare class WalletV4ContractR2 extends WalletContract {
     /**
      * @return {Promise<number>}
      */
-    getWalletId(): Promise<any>;
+    getWalletId(): Promise<number>;
     /**
      * @return {Promise<BN>}
      */
@@ -73,6 +83,6 @@ export declare class WalletV4ContractR2 extends WalletContract {
     /**
      * @return {Promise<string[]>} plugins addresses
      */
-    getPluginsList(): Promise<any>;
+    getPluginsList(): Promise<string[]>;
 }
 export {};

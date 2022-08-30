@@ -4,6 +4,7 @@ import { bytesToHex, toNano } from "../../utils/utils";
 import { Contract } from "../contract";
 import { WalletContract } from "./walletContract";
 export class WalletV4ContractR2 extends WalletContract {
+    methods = {};
     /**
      * @param provider    {HttpProvider}
      * @param options {any}
