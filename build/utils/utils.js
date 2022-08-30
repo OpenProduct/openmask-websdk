@@ -16,10 +16,10 @@ export function sha256(bytes) {
  * @return {BN}
  */
 export function toNano(amount) {
-    if (!BN.isBN(amount) && !(typeof amount === 'string')) {
-        throw new Error('Please pass numbers as strings or BN objects to avoid precision errors.');
+    if (!BN.isBN(amount) && !(typeof amount === "string")) {
+        throw new Error("Please pass numbers as strings or BN objects to avoid precision errors.");
     }
-    return ethunit.toWei(amount, 'gwei');
+    return ethunit.toWei(amount, "gwei");
 }
 /**
  * from nanocoins to coins
@@ -27,10 +27,10 @@ export function toNano(amount) {
  * @return {string}
  */
 export function fromNano(amount) {
-    if (!BN.isBN(amount) && !(typeof amount === 'string')) {
-        throw new Error('Please pass numbers as strings or BN objects to avoid precision errors.');
+    if (!BN.isBN(amount) && !(typeof amount === "string")) {
+        throw new Error("Please pass numbers as strings or BN objects to avoid precision errors.");
     }
-    return ethunit.fromWei(amount, 'gwei');
+    return ethunit.fromWei(amount, "gwei");
 }
 // look up tables
 const to_hex_array = [];
@@ -73,7 +73,7 @@ export function hexToBytes(s) {
         const i2 = i * 2;
         const b = s.substring(i2, i2 + 2);
         if (!to_byte_map.hasOwnProperty(b))
-            throw new Error('invalid hex character ' + b);
+            throw new Error("invalid hex character " + b);
         result[i] = to_byte_map[b];
     }
     return result;
@@ -235,8 +235,8 @@ export function bytesToBase64(bytes) {
 // todo: base64 decoding process could ignore one extra character at the end of string and the byte-length check below won't be able to catch it.
 export function base64toString(base64) {
     // TODO: CHECK
-    if (typeof self === 'undefined') {
-        return Buffer.from(base64, 'base64').toString('binary'); // todo: (tolya-yanot) Buffer silently ignore incorrect base64 symbols, we need to throw error
+    if (typeof self === "undefined") {
+        return Buffer.from(base64, "base64").toString("binary"); // todo: (tolya-yanot) Buffer silently ignore incorrect base64 symbols, we need to throw error
     }
     else {
         return atob(base64);
@@ -244,8 +244,8 @@ export function base64toString(base64) {
 }
 export function stringToBase64(s) {
     // TODO: CHECK
-    if (typeof self === 'undefined') {
-        return Buffer.from(s, 'binary').toString('base64'); // todo: (tolya-yanot) Buffer silently ignore incorrect base64 symbols, we need to throw error
+    if (typeof self === "undefined") {
+        return Buffer.from(s, "binary").toString("base64"); // todo: (tolya-yanot) Buffer silently ignore incorrect base64 symbols, we need to throw error
     }
     else {
         return btoa(s);

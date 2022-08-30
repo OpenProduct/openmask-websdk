@@ -1,4 +1,4 @@
-import { base64toString, bytesToHex, crc16, hexToBytes, stringToBase64, stringToBytes } from "./utils";
+import { base64toString, bytesToHex, crc16, hexToBytes, stringToBase64, stringToBytes, } from "./utils";
 const bounceable_tag = 0x11;
 const non_bounceable_tag = 0x51;
 const test_flag = 0x80;
@@ -12,7 +12,8 @@ export function parseFriendlyAddress(addressString) {
         throw new Error(`User-friendly address should contain strictly 48 characters`);
     }
     const data = stringToBytes(base64toString(addressString));
-    if (data.length !== 36) { // 1byte tag + 1byte workchain + 32 bytes hash + 2 byte crc
+    if (data.length !== 36) {
+        // 1byte tag + 1byte workchain + 32 bytes hash + 2 byte crc
         throw "Unknown address type: byte length is not equal to 36";
     }
     const addr = data.slice(0, 34);
@@ -28,18 +29,19 @@ export function parseFriendlyAddress(addressString) {
         isTestOnly = true;
         tag = tag ^ test_flag;
     }
-    if ((tag !== bounceable_tag) && (tag !== non_bounceable_tag))
+    if (tag !== bounceable_tag && tag !== non_bounceable_tag)
         throw "Unknown address tag";
     isBounceable = tag === bounceable_tag;
     let workchain = null;
-    if (addr[1] === 0xff) { // TODO we should read signed integer here
+    if (addr[1] === 0xff) {
+        // TODO we should read signed integer here
         workchain = -1;
     }
     else {
         workchain = addr[1];
     }
     if (workchain !== 0 && workchain !== -1)
-        throw new Error('Invalid address wc ' + workchain);
+        throw new Error("Invalid address wc " + workchain);
     const hashPart = addr.slice(2, 34);
     return { isTestOnly, isBounceable, workchain, hashPart };
 }
@@ -80,21 +82,21 @@ export class Address {
         }
         if (anyForm.search(/\-/) > 0 || anyForm.search(/_/) > 0) {
             this.isUrlSafe = true;
-            anyForm = anyForm.replace(/\-/g, '+').replace(/_/g, '\/');
+            anyForm = anyForm.replace(/\-/g, "+").replace(/_/g, "/");
         }
         else {
             this.isUrlSafe = false;
         }
-        if (anyForm.indexOf(':') > -1) {
-            const arr = anyForm.split(':');
+        if (anyForm.indexOf(":") > -1) {
+            const arr = anyForm.split(":");
             if (arr.length !== 2)
-                throw new Error('Invalid address ' + anyForm);
+                throw new Error("Invalid address " + anyForm);
             const wc = parseInt(arr[0]);
             if (wc !== 0 && wc !== -1)
-                throw new Error('Invalid address wc ' + anyForm);
+                throw new Error("Invalid address wc " + anyForm);
             const hex = arr[1];
             if (hex.length !== 64)
-                throw new Error('Invalid address hex ' + anyForm);
+                throw new Error("Invalid address hex " + anyForm);
             this.isUserFriendly = false;
             this.wc = wc;
             this.hashPart = hexToBytes(hex);
@@ -145,7 +147,7 @@ export class Address {
             const params = new Uint8Array(addressWithChecksum);
             let addressBase64 = stringToBase64(String.fromCharCode.apply(null, params));
             if (isUrlSafe) {
-                addressBase64 = addressBase64.replace(/\+/g, '-').replace(/\//g, '_');
+                addressBase64 = addressBase64.replace(/\+/g, "-").replace(/\//g, "_");
             }
             return addressBase64;
         }
