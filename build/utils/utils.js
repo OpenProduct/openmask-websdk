@@ -1,6 +1,5 @@
 import BN from "bn.js";
 import nacl from "tweetnacl";
-// TODO: CHECK
 const ethunit = require("ethjs-unit");
 /**
  *

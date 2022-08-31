@@ -17,7 +17,7 @@ export declare function toNano(amount: BN | string): BN;
  * @param amount  {BN | string}
  * @return {string}
  */
-export declare function fromNano(amount: BN | string): BN;
+export declare function fromNano(amount: BN | string): string;
 /**
  * @param buffer  {Uint8Array}
  * @return {string}

@@ -1,7 +1,6 @@
 import BN from "bn.js";
 import nacl from "tweetnacl";
 
-// TODO: CHECK
 const ethunit = require("ethjs-unit");
 
 /**
@@ -33,7 +32,7 @@ export function toNano(amount: BN | string): BN {
  * @param amount  {BN | string}
  * @return {string}
  */
-export function fromNano(amount: BN | string): BN {
+export function fromNano(amount: BN | string): string {
   if (!BN.isBN(amount) && !(typeof amount === "string")) {
     throw new Error(
       "Please pass numbers as strings or BN objects to avoid precision errors."
