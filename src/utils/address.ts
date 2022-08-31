@@ -63,7 +63,7 @@ export class Address {
   /**
    * @param anyForm {string | Address}
    */
-  static isValid(anyForm: string | Address) {
+  static isValid(anyForm: string | Address | any): anyForm is Address {
     try {
       new Address(anyForm);
       return true;

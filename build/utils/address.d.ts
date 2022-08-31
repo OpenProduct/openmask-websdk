@@ -13,7 +13,7 @@ export declare class Address {
     /**
      * @param anyForm {string | Address}
      */
-    static isValid(anyForm: string | Address): boolean;
+    static isValid(anyForm: string | Address | any): anyForm is Address;
     wc: number;
     hashPart: Uint8Array;
     isTestOnly: boolean;
