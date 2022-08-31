@@ -18,20 +18,23 @@ export class HttpProvider {
      * @param request   {any}
      * @return {Promise<any>}
      */
-    sendImpl(apiUrl, request) {
+    async sendImpl(apiUrl, request) {
         const headers = {
             "Content-Type": "application/json",
         };
         if (this.options.apiKey) {
             headers["X-API-Key"] = this.options.apiKey;
         }
-        return fetch(apiUrl, {
+        const response = await fetch(apiUrl, {
             method: "POST",
             headers: headers,
             body: JSON.stringify(request),
-        })
-            .then((response) => response.json())
-            .then(({ result, error }) => result || Promise.reject(error));
+        });
+        if (response.status !== 200) {
+            throw new Error(`${response.status}: ${response.statusText}`);
+        }
+        const { result, error } = await response.json();
+        return result || Promise.reject(error);
     }
     /**
      * @param method    {string}

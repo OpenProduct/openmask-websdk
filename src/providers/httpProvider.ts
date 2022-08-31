@@ -12,6 +12,13 @@ export interface EstimateFee {
   };
 }
 
+interface JRPSRequest {
+  id: number;
+  jsonrpc: string;
+  method: string;
+  params: any;
+}
+
 export class HttpProvider {
   SHARD_ID_ALL = SHARD_ID_ALL;
 
@@ -32,7 +39,7 @@ export class HttpProvider {
    * @param request   {any}
    * @return {Promise<any>}
    */
-  sendImpl<Payload>(apiUrl: string, request: Payload) {
+  async sendImpl(apiUrl: string, request: JRPSRequest) {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
     };
@@ -40,13 +47,18 @@ export class HttpProvider {
       headers["X-API-Key"] = this.options.apiKey;
     }
 
-    return fetch(apiUrl, {
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: headers,
       body: JSON.stringify(request),
-    })
-      .then((response) => response.json())
-      .then(({ result, error }) => result || Promise.reject(error));
+    });
+    if (response.status !== 200) {
+      throw new Error(
+        `${response.status}: ${request.method}: ${response.statusText}`
+      );
+    }
+    const { result, error } = await response.json();
+    return result || Promise.reject(error);
   }
 
   /**
