@@ -7,6 +7,12 @@ export interface EstimateFee {
         fwd_fee: number;
     };
 }
+interface JRPSRequest {
+    id: number;
+    jsonrpc: string;
+    method: string;
+    params: any;
+}
 export declare class HttpProvider {
     SHARD_ID_ALL: string;
     host: string;
@@ -26,7 +32,7 @@ export declare class HttpProvider {
      * @param request   {any}
      * @return {Promise<any>}
      */
-    sendImpl<Payload>(apiUrl: string, request: Payload): Promise<any>;
+    sendImpl(apiUrl: string, request: JRPSRequest): Promise<any>;
     /**
      * @param method    {string}
      * @param params    {any}  todo: Array<any>

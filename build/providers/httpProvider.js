@@ -31,7 +31,10 @@ export class HttpProvider {
             body: JSON.stringify(request),
         });
         if (response.status !== 200) {
-            throw new Error(`${response.status}: ${response.statusText}`);
+            const methodName = request.method === "runGetMethod"
+                ? `runGetMethod: ${request.params.method}`
+                : request.method;
+            throw new Error(`${response.status}: ${methodName}: ${response.statusText}`);
         }
         const { result, error } = await response.json();
         return result || Promise.reject(error);

@@ -51,7 +51,7 @@ export class HttpProviderUtils {
     }
     static parseResponse(result) {
         if (result.exit_code !== 0) {
-            const err = new ProviderError("http provider parse response error", result);
+            const err = new ProviderError(`Http provider parse response error ${JSON.stringify(result)}`, result);
             throw err;
         }
         const arr = result.stack.map(HttpProviderUtils.parseResponseStack);

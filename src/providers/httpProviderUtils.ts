@@ -70,7 +70,7 @@ export class HttpProviderUtils {
   static parseResponse(result: Result) {
     if (result.exit_code !== 0) {
       const err = new ProviderError(
-        "http provider parse response error",
+        `Http provider parse response error ${JSON.stringify(result)}`,
         result
       );
       throw err;
