@@ -1,7 +1,7 @@
 {
   "name": "@tonmask/web-sdk",
   "version": "0.0.3",
-  "description": "TonMask Web - Browser JavaScript API for TON blockchain",
+  "description": "TonMask Web - Browser TypeScript API for TON blockchain",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
