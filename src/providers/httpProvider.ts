@@ -127,8 +127,12 @@ export class HttpProvider {
    * @param address {string}
    */
   async getSeqno(address: string): Promise<number> {
-    const seqno: BN = await this.call2(address, "seqno");
-    return seqno.toNumber();
+    try {
+      const seqno: BN = await this.call2(address, "seqno");
+      return seqno.toNumber();
+    } catch (e) {
+      return 0;
+    }
   }
 
   /**

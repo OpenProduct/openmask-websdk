@@ -98,8 +98,13 @@ export class HttpProvider {
      * @param address {string}
      */
     async getSeqno(address) {
-        const seqno = await this.call2(address, "seqno");
-        return seqno.toNumber();
+        try {
+            const seqno = await this.call2(address, "seqno");
+            return seqno.toNumber();
+        }
+        catch (e) {
+            return 0;
+        }
     }
     /**
      * Use this method to send serialized boc file: fully packed and serialized external message.
