@@ -8,42 +8,29 @@ import { Contract } from "../contract";
  */
 export class WalletContract extends Contract {
     deploy;
-    methods;
-    /**
-     * @param provider    {HttpProvider}
-     * @param options?    {{code: Uint8Array, publicKey?: Uint8Array, address?: Address | string, wc?: number}}
-     */
     constructor(provider, options) {
         if (!options.publicKey && !options.address)
             throw new Error("WalletContract required publicKey or address in options");
         super(provider, options);
-        this.methods = {
-            /**
-             * @param   params {{secretKey: Uint8Array, toAddress: Address | string, amount: BN | number, seqno: number, payload: string | Uint8Array | Cell, sendMode: number, stateInit?: Cell}}
-             */
-            transfer: (params) => Contract.createMethod(provider, this.createTransferMessage(params.secretKey, params.toAddress, params.amount, params.seqno, params.payload, params.sendMode, !Boolean(params.secretKey), params.stateInit)),
-            seqno: () => {
-                return {
-                    /**
-                     * @return {Promise<number>}
-                     */
-                    call: async () => {
-                        const address = await this.getAddress();
-                        let n = null;
-                        try {
-                            n = provider.getSeqno(address.toString());
-                        }
-                        catch (e) { }
-                        return n;
-                    },
-                };
-            },
-        };
         /**
          * @param secretKey {Uint8Array}
          */
         this.deploy = (secretKey) => Contract.createMethod(provider, this.createInitExternalMessage(secretKey));
     }
+    transfer = (params) => Contract.createMethod(this.provider, this.createTransferMessage(params.secretKey, params.toAddress, params.amount, params.seqno, params.payload, params.sendMode, !Boolean(params.secretKey), params.stateInit));
+    seqno = () => {
+        return {
+            call: async () => {
+                const address = await this.getAddress();
+                let n = null;
+                try {
+                    n = this.provider.getSeqno(address.toString());
+                }
+                catch (e) { }
+                return n;
+            },
+        };
+    };
     getName() {
         throw new Error("override me");
     }

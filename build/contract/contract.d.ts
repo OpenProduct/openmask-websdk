@@ -41,18 +41,18 @@ export declare class Contract {
      * @private
      * @return {Cell} cell contains contact code
      */
-    createCodeCell(): Cell;
+    protected createCodeCell(): Cell;
     /**
      * Method to override
      * @protected
      * @return {Cell} cell contains contract data
      */
-    createDataCell(): Cell;
+    protected createDataCell(): Cell;
     /**
      * @protected
      * @return {Promise<{stateInit: Cell, address: Address, code: Cell, data: Cell}>}
      */
-    createStateInit(): Promise<{
+    protected createStateInit(): Promise<{
         stateInit: Cell;
         address: Address;
         code: Cell;

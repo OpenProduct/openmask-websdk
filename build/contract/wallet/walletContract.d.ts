@@ -23,25 +23,24 @@ export interface BaseMethods {
  */
 export declare class WalletContract extends Contract {
     deploy: (secretKey: Uint8Array) => void;
-    methods: BaseMethods;
-    /**
-     * @param provider    {HttpProvider}
-     * @param options?    {{code: Uint8Array, publicKey?: Uint8Array, address?: Address | string, wc?: number}}
-     */
     constructor(provider: HttpProvider, options: Options);
+    transfer: (params: TransferParams) => Method;
+    seqno: () => {
+        call: () => Promise<number | null>;
+    };
     getName(): void;
     /**
      * @override
      * @protected
      * @return {Cell} cell contains wallet data
      */
-    createDataCell(): Cell;
+    protected createDataCell(): Cell;
     /**
      * @protected
      * @param   seqno?   {number}
      * @return {Cell}
      */
-    createSigningMessage(seqno?: number): Cell;
+    protected createSigningMessage(seqno?: number): Cell;
     /**
      * External message for initialization
      * @param secretKey  {Uint8Array} nacl.KeyPair.secretKey

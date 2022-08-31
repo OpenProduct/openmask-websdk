@@ -10,5 +10,5 @@ export declare const ALL: {
     v4R1: typeof WalletV4ContractR1;
     v4R2: typeof WalletV4ContractR2;
 };
-export declare const LIST: (typeof WalletV2ContractR1 | typeof WalletV4ContractR1)[];
+export declare const LIST: (typeof WalletV2ContractR1 | typeof WalletV4ContractR1 | typeof WalletV4ContractR2)[];
 export declare const defaultVersion = "v3R1";

@@ -49,7 +49,7 @@ export class Contract {
   /**
    * @return {Promise<Address>}
    */
-  async getAddress() {
+  public async getAddress() {
     if (!this.address) {
       this.address = (await this.createStateInit()).address;
     }
@@ -60,7 +60,7 @@ export class Contract {
    * @private
    * @return {Cell} cell contains contact code
    */
-  createCodeCell() {
+  protected createCodeCell() {
     if (!this.options.code)
       throw new Error("Contract: options.code is not defined");
     return this.options.code;
@@ -71,7 +71,7 @@ export class Contract {
    * @protected
    * @return {Cell} cell contains contract data
    */
-  createDataCell() {
+  protected createDataCell() {
     return new Cell();
   }
 
@@ -79,7 +79,7 @@ export class Contract {
    * @protected
    * @return {Promise<{stateInit: Cell, address: Address, code: Cell, data: Cell}>}
    */
-  async createStateInit() {
+  protected async createStateInit() {
     const codeCell = this.createCodeCell();
     const dataCell = this.createDataCell();
     const stateInit = Contract.createStateInit(codeCell, dataCell);

@@ -11,13 +11,13 @@ export declare function sha256(bytes: Uint8Array): Promise<ArrayBuffer>;
  * @param amount {BN | string}
  * @return {BN}
  */
-export declare function toNano(amount: BN | string): any;
+export declare function toNano(amount: BN | string): BN;
 /**
  * from nanocoins to coins
  * @param amount  {BN | string}
  * @return {string}
  */
-export declare function fromNano(amount: BN | string): any;
+export declare function fromNano(amount: BN | string): BN;
 /**
  * @param buffer  {Uint8Array}
  * @return {string}

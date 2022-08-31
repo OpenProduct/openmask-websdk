@@ -25,62 +25,13 @@ export interface BaseMethods {
  */
 export class WalletContract extends Contract {
   deploy: (secretKey: Uint8Array) => void;
-  methods: BaseMethods;
 
-  /**
-   * @param provider    {HttpProvider}
-   * @param options?    {{code: Uint8Array, publicKey?: Uint8Array, address?: Address | string, wc?: number}}
-   */
   constructor(provider: HttpProvider, options: Options) {
     if (!options.publicKey && !options.address)
       throw new Error(
         "WalletContract required publicKey or address in options"
       );
     super(provider, options);
-
-    this.methods = {
-      /**
-       * @param   params {{secretKey: Uint8Array, toAddress: Address | string, amount: BN | number, seqno: number, payload: string | Uint8Array | Cell, sendMode: number, stateInit?: Cell}}
-       */
-      transfer: (params: {
-        secretKey: Uint8Array;
-        toAddress: Address | string;
-        amount: BN | number;
-        seqno: number;
-        payload: string | Uint8Array | Cell;
-        sendMode: number;
-        stateInit?: Cell;
-      }) =>
-        Contract.createMethod(
-          provider,
-          this.createTransferMessage(
-            params.secretKey,
-            params.toAddress,
-            params.amount,
-            params.seqno,
-            params.payload,
-            params.sendMode,
-            !Boolean(params.secretKey),
-            params.stateInit
-          )
-        ),
-
-      seqno: () => {
-        return {
-          /**
-           * @return {Promise<number>}
-           */
-          call: async () => {
-            const address = await this.getAddress();
-            let n = null;
-            try {
-              n = provider.getSeqno(address.toString());
-            } catch (e) {}
-            return n;
-          },
-        };
-      },
-    };
 
     /**
      * @param secretKey {Uint8Array}
@@ -92,6 +43,34 @@ export class WalletContract extends Contract {
       );
   }
 
+  public transfer = (params: TransferParams) =>
+    Contract.createMethod(
+      this.provider,
+      this.createTransferMessage(
+        params.secretKey,
+        params.toAddress,
+        params.amount,
+        params.seqno,
+        params.payload,
+        params.sendMode,
+        !Boolean(params.secretKey),
+        params.stateInit
+      )
+    );
+
+  public seqno = () => {
+    return {
+      call: async () => {
+        const address = await this.getAddress();
+        let n = null;
+        try {
+          n = this.provider.getSeqno(address.toString());
+        } catch (e) {}
+        return n;
+      },
+    };
+  };
+
   getName() {
     throw new Error("override me");
   }
@@ -101,7 +80,7 @@ export class WalletContract extends Contract {
    * @protected
    * @return {Cell} cell contains wallet data
    */
-  createDataCell() {
+  protected createDataCell() {
     // 4 byte seqno, 32 byte publicKey
     const cell = new Cell();
     cell.bits.writeUint(0, 32); // seqno
@@ -114,7 +93,7 @@ export class WalletContract extends Contract {
    * @param   seqno?   {number}
    * @return {Cell}
    */
-  createSigningMessage(seqno?: number) {
+  protected createSigningMessage(seqno?: number) {
     seqno = seqno || 0;
     const cell = new Cell();
     cell.bits.writeUint(seqno, 32);

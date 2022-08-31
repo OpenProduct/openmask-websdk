@@ -18,7 +18,7 @@ export function sha256(bytes: Uint8Array) {
  * @param amount {BN | string}
  * @return {BN}
  */
-export function toNano(amount: BN | string) {
+export function toNano(amount: BN | string): BN {
   if (!BN.isBN(amount) && !(typeof amount === "string")) {
     throw new Error(
       "Please pass numbers as strings or BN objects to avoid precision errors."
@@ -33,7 +33,7 @@ export function toNano(amount: BN | string) {
  * @param amount  {BN | string}
  * @return {string}
  */
-export function fromNano(amount: BN | string) {
+export function fromNano(amount: BN | string): BN {
   if (!BN.isBN(amount) && !(typeof amount === "string")) {
     throw new Error(
       "Please pass numbers as strings or BN objects to avoid precision errors."
