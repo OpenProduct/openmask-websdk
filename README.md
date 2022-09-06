@@ -24,7 +24,7 @@ const amount: string = await provider.getBalance(wallet);
 const seqno: BN = await provider.call2(wallet, "seqno");
   
 // Get wallet transactions
-const transactions = ton.getTransactions(wallet, 10)
+const transactions = await ton.getTransactions(wallet, 10)
   
 ```
 
