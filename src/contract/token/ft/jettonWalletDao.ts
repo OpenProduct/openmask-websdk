@@ -1,10 +1,11 @@
+import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
 import HttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { parseAddress } from "../nft/utils";
 
 export interface JettonWalletData {
-  balance: number;
+  balance: BN;
   ownerAddress: Address | null;
   jettonMinterAddress: Address | null;
   jettonWalletCode: Cell;
@@ -19,7 +20,7 @@ export class JettonWalletDao {
     this.jettonWalletAddress = jettonWalletAddress;
   }
 
-  async getData() {
+  async getData(): Promise<JettonWalletData> {
     const result = await this.provider.call2(
       this.jettonWalletAddress.toString(),
       "get_wallet_data"

@@ -3,7 +3,7 @@ import nacl from "tweetnacl";
 import { Cell } from "../../boc/cell";
 import HttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
-import { Contract, ExternalMessage, Method, Options } from "../contract";
+import { Contract, ExternalMessage, Options } from "../contract";
 
 export interface TransferParams {
   secretKey: Uint8Array;
@@ -13,11 +13,6 @@ export interface TransferParams {
   payload: string | Uint8Array | Cell;
   sendMode: number;
   stateInit?: Cell;
-}
-
-export interface BaseMethods {
-  seqno: () => { call: () => Promise<number | null> };
-  transfer: (params: TransferParams) => Method;
 }
 
 /**

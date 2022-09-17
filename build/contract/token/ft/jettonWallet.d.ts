@@ -27,10 +27,5 @@ export declare class JettonWallet extends Contract {
         jettonAmount: import("bn.js");
         responseAddress: Address;
     }) => Cell;
-    getData(): Promise<{
-        balance: any;
-        ownerAddress: Address | null;
-        jettonMinterAddress: Address | null;
-        jettonWalletCode: any;
-    }>;
+    getData(): Promise<import("./jettonWalletDao").JettonWalletData>;
 }
