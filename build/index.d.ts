@@ -3,7 +3,7 @@ export * from "./boc/cell";
 export * from "./contract/contract";
 export * from "./contract/dns/dns";
 export * from "./contract/dns/utils";
-export * from "./contract/token/nft/utils";
+export * from "./contract/token";
 export * from "./contract/wallet/index";
 export * from "./contract/wallet/walletContract";
 export * from "./contract/wallet/walletContractV2";
