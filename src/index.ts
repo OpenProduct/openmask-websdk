@@ -12,4 +12,5 @@ export * from "./contract/wallet/walletContractV4";
 export * from "./contract/wallet/walletContractV4R2";
 export * from "./providers/httpProvider";
 export * from "./utils/address";
+export * from "./utils/transfer";
 export * from "./utils/utils";
