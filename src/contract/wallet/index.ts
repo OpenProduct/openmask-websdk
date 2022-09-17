@@ -3,6 +3,16 @@ import { WalletV3ContractR1, WalletV3ContractR2 } from "./walletContractV3";
 import { WalletV4ContractR1 } from "./walletContractV4";
 import { WalletV4ContractR2 } from "./walletContractV4R2";
 
+export * from "./walletContract";
+export {
+  WalletV2ContractR1,
+  WalletV2ContractR2,
+  WalletV3ContractR1,
+  WalletV3ContractR2,
+  WalletV4ContractR1,
+  WalletV4ContractR2,
+};
+
 export const ALL = {
   v2R1: WalletV2ContractR1,
   v2R2: WalletV2ContractR2,
