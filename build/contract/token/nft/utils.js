@@ -1,3 +1,4 @@
+import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
 import Address from "../../../utils/address";
 export const SNAKE_DATA_PREFIX = 0x00;
@@ -93,4 +94,24 @@ export const getRoyaltyParams = async (provider, address) => {
     const royalty = royaltyFactor / royaltyBase;
     const royaltyAddress = parseAddress(result[2]);
     return { royalty, royaltyBase, royaltyFactor, royaltyAddress };
+};
+export const nftTransferBody = (params) => {
+    const cell = new Cell();
+    cell.bits.writeUint(0x5fcc3d14, 32); // transfer op
+    cell.bits.writeUint(params.queryId || 0, 64);
+    cell.bits.writeAddress(params.newOwnerAddress);
+    cell.bits.writeAddress(params.responseAddress);
+    cell.bits.writeBit(false); // null custom_payload
+    cell.bits.writeCoins(params.forwardAmount || new BN(0));
+    cell.bits.writeBit(false); // forward_payload in this slice, not separate cell
+    if (params.forwardPayload) {
+        cell.bits.writeBytes(params.forwardPayload);
+    }
+    return cell;
+};
+export const nftGetStaticDataBody = (params) => {
+    const body = new Cell();
+    body.bits.writeUint(0x2fcb26a2, 32); // OP
+    body.bits.writeUint(params.queryId || 0, 64); // query_id
+    return body;
 };

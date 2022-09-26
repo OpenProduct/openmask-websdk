@@ -1,3 +1,4 @@
+import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
 import HttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
@@ -41,3 +42,13 @@ export declare const getRoyaltyParams: (provider: HttpProvider, address: string)
     royaltyFactor: any;
     royaltyAddress: Address | null;
 }>;
+export declare const nftTransferBody: (params: {
+    queryId?: number;
+    newOwnerAddress: Address;
+    forwardAmount?: BN;
+    forwardPayload?: Uint8Array;
+    responseAddress: Address;
+}) => Cell;
+export declare const nftGetStaticDataBody: (params: {
+    queryId?: number;
+}) => Cell;
