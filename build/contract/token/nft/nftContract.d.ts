@@ -21,15 +21,7 @@ export declare class NftItem extends Contract {
     /**
      * @return {Promise<{isInitialized: boolean, index: number, itemIndex: BN, collectionAddress: Address|null, ownerAddress: Address|null, contentCell: Cell, contentUri: string|null}>}
      */
-    getData: () => Promise<{
-        isInitialized: boolean;
-        index: number;
-        itemIndex: any;
-        collectionAddress: Address | null;
-        ownerAddress: Address | null;
-        contentCell: any;
-        contentUri: string | null;
-    }>;
+    getData: () => Promise<import("./nftContractDao").NftData>;
     createTransferBody: (params: {
         queryId?: number | undefined;
         newOwnerAddress: Address;

@@ -1,6 +1,18 @@
+import BN from "bn.js";
+import { Cell } from "../../../boc/cell";
 import HttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { getRoyaltyParams, parseAddress, parseOffchainUriCell } from "./utils";
+
+export interface NftData {
+  isInitialized: boolean;
+  index: number;
+  itemIndex: BN;
+  collectionAddress: Address | null;
+  ownerAddress: Address | null;
+  contentCell: Cell;
+  contentUri: string | null;
+}
 
 export class NftContractDao {
   provider: HttpProvider;
@@ -11,7 +23,7 @@ export class NftContractDao {
     this.address = address;
   }
 
-  async getData() {
+  async getData(): Promise<NftData> {
     const result = await this.provider.call2(
       this.address.toString(),
       "get_nft_data"
