@@ -3,7 +3,7 @@ import { Cell } from "../../../boc/cell";
 import HttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { bytesToBase64 } from "../../../utils/utils";
-import { NftContractDao, NftData } from "./nftContractDao";
+import { NftData } from "./nftContractDao";
 import { getRoyaltyParams, parseAddress, parseOffchainUriCell } from "./utils";
 
 export interface NftCollectionData {
@@ -53,9 +53,7 @@ export class NftCollectionDao {
     };
   }
 
-  async getNftItemContent(nftAddress: Address): Promise<NftData> {
-    const dao = new NftContractDao(this.provider, nftAddress);
-    const nftData = await dao.getData();
+  async getNftItemContent(nftData: NftData): Promise<NftData> {
     if (nftData.isInitialized) {
       const result = await this.provider.call2(
         this.address.toString(),

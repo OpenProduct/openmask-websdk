@@ -18,7 +18,7 @@ export declare class NftCollectionDao {
      * @return {Promise<{nextItemIndex: number, itemsCount: BN, ownerAddress: Address, collectionContentCell: Cell, collectionContentUri: string|null}>}
      */
     getCollectionData(): Promise<NftCollectionData>;
-    getNftItemContent(nftAddress: Address): Promise<NftData>;
+    getNftItemContent(nftData: NftData): Promise<NftData>;
     /**
      * @param index {BN|number}
      * @return {Promise<Address>}

@@ -4,6 +4,7 @@ export * from "./ft/jettonWallet";
 export * from "./ft/jettonWalletDao";
 export * from "./ft/utils";
 export * from "./nft/nftCollectionDao";
+export * from "./nft/nftContentDao";
 export * from "./nft/nftContract";
 export * from "./nft/nftContractDao";
 export * from "./nft/utils";

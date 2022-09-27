@@ -1,6 +1,5 @@
 import BN from "bn.js";
 import { bytesToBase64 } from "../../../utils/utils";
-import { NftContractDao } from "./nftContractDao";
 import { getRoyaltyParams, parseAddress, parseOffchainUriCell } from "./utils";
 export class NftCollectionDao {
     provider;
@@ -35,9 +34,7 @@ export class NftCollectionDao {
             collectionContentUri,
         };
     }
-    async getNftItemContent(nftAddress) {
-        const dao = new NftContractDao(this.provider, nftAddress);
-        const nftData = await dao.getData();
+    async getNftItemContent(nftData) {
         if (nftData.isInitialized) {
             const result = await this.provider.call2(this.address.toString(), "get_nft_content", [
                 ["num", nftData.itemIndex.toString(10)],
