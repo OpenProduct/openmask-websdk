@@ -8,7 +8,8 @@ export type Pair =
   | ["list", any]
   | ["tuple", any]
   | ["cell", any]
-  | ["tvm.Slice", string];
+  | ["tvm.Slice", string]
+  | ["tvm.Cell", string];
 
 interface Result {
   exit_code: number;

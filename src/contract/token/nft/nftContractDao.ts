@@ -41,7 +41,10 @@ export class NftContractDao {
 
     let contentUri = null;
     try {
-      contentUri = isInitialized ? parseOffchainUriCell(contentCell) : null; // single NFT without collection
+      contentUri =
+        isInitialized && collectionAddress === null
+          ? parseOffchainUriCell(contentCell)
+          : null; // single NFT without collection
     } catch (e) {}
 
     return {

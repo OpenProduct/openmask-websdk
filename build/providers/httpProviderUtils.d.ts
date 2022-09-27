@@ -1,5 +1,5 @@
 import BN from "bn.js";
-export declare type Pair = ["num", string | number] | ["list", any] | ["tuple", any] | ["cell", any] | ["tvm.Slice", string];
+export declare type Pair = ["num", string | number] | ["list", any] | ["tuple", any] | ["cell", any] | ["tvm.Slice", string] | ["tvm.Cell", string];
 interface Result {
     exit_code: number;
     stack: Pair[];
