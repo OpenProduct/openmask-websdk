@@ -59,6 +59,11 @@ export function parseFriendlyAddress(addressString: string) {
   return { isTestOnly, isBounceable, workchain, hashPart };
 }
 
+export interface HashData {
+  wc: number;
+  hashPart: Uint8Array;
+}
+
 export class Address {
   /**
    * @param anyForm {string | Address}
@@ -82,7 +87,7 @@ export class Address {
   /**
    * @param anyForm {string | Address}
    */
-  constructor(anyForm: string | Address) {
+  constructor(anyForm: string | Address | HashData) {
     if (anyForm == null) {
       throw "Invalid address";
     }
@@ -94,6 +99,15 @@ export class Address {
       this.isUserFriendly = anyForm.isUserFriendly;
       this.isBounceable = anyForm.isBounceable;
       this.isUrlSafe = anyForm.isUrlSafe;
+      return;
+    }
+    if (typeof anyForm != "string") {
+      this.wc = anyForm.wc;
+      this.hashPart = anyForm.hashPart;
+      this.isTestOnly = false;
+      this.isUserFriendly = false;
+      this.isBounceable = false;
+      this.isUrlSafe = false;
       return;
     }
 
