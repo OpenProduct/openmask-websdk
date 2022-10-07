@@ -14,6 +14,7 @@ export interface ExternalMessage {
 }
 export declare type Options = {
     code?: Cell;
+    data?: Cell;
     address?: Address | string;
     wc?: number;
     [key: string]: any;

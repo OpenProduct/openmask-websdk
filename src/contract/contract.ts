@@ -17,6 +17,7 @@ export interface ExternalMessage {
 
 export type Options = {
   code?: Cell;
+  data?: Cell;
   address?: Address | string;
   wc?: number;
   [key: string]: any;
@@ -72,7 +73,10 @@ export class Contract {
    * @return {Cell} cell contains contract data
    */
   protected createDataCell() {
-    return new Cell();
+    if (!this.options.data) {
+      return new Cell();
+    }
+    return this.options.data;
   }
 
   /**
@@ -82,6 +86,7 @@ export class Contract {
   protected async createStateInit() {
     const codeCell = this.createCodeCell();
     const dataCell = this.createDataCell();
+
     const stateInit = Contract.createStateInit(codeCell, dataCell);
     const stateInitHash = await stateInit.hash();
     const address = new Address(

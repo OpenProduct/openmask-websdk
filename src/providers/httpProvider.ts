@@ -3,13 +3,15 @@ import { HttpProviderUtils, Pair } from "./httpProviderUtils";
 
 const SHARD_ID_ALL = "-9223372036854775808"; // 0x8000000000000000
 
+export interface EstimateFeeValues {
+  in_fwd_fee: number;
+  storage_fee: number;
+  gas_fee: number;
+  fwd_fee: number;
+}
+
 export interface EstimateFee {
-  source_fees: {
-    in_fwd_fee: number;
-    storage_fee: number;
-    gas_fee: number;
-    fwd_fee: number;
-  };
+  source_fees: EstimateFeeValues;
 }
 
 interface JRPSRequest {

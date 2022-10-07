@@ -1,11 +1,12 @@
 import { Pair } from "./httpProviderUtils";
+export interface EstimateFeeValues {
+    in_fwd_fee: number;
+    storage_fee: number;
+    gas_fee: number;
+    fwd_fee: number;
+}
 export interface EstimateFee {
-    source_fees: {
-        in_fwd_fee: number;
-        storage_fee: number;
-        gas_fee: number;
-        fwd_fee: number;
-    };
+    source_fees: EstimateFeeValues;
 }
 interface JRPSRequest {
     id: number;

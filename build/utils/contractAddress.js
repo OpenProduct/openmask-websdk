@@ -1,13 +1,8 @@
-import { Cell } from "../boc/cell";
-import { StateInit } from "../message/stateInit";
+import { Contract } from "../contract/contract";
 import Address from "./address";
+import { bytesToHex } from "./utils";
 export async function contractAddress(source) {
-    let cell = new Cell();
-    let state = new StateInit({
-        code: source.initialCode,
-        data: source.initialData,
-    });
-    state.writeTo(cell);
-    let hashPart = await cell.hash();
-    return new Address({ wc: source.workchain, hashPart });
+    const stateInit = Contract.createStateInit(source.initialCode, source.initialData);
+    const stateInitHash = await stateInit.hash();
+    return new Address(source.workchain + ":" + bytesToHex(stateInitHash));
 }

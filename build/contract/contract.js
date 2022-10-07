@@ -42,7 +42,10 @@ export class Contract {
      * @return {Cell} cell contains contract data
      */
     createDataCell() {
-        return new Cell();
+        if (!this.options.data) {
+            return new Cell();
+        }
+        return this.options.data;
     }
     /**
      * @protected
