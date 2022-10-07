@@ -80,6 +80,15 @@ export class Address {
             this.isUrlSafe = anyForm.isUrlSafe;
             return;
         }
+        if (typeof anyForm != "string") {
+            this.wc = anyForm.wc;
+            this.hashPart = anyForm.hashPart;
+            this.isTestOnly = false;
+            this.isUserFriendly = false;
+            this.isBounceable = false;
+            this.isUrlSafe = false;
+            return;
+        }
         if (anyForm.search(/\-/) > 0 || anyForm.search(/_/) > 0) {
             this.isUrlSafe = true;
             anyForm = anyForm.replace(/\-/g, "+").replace(/_/g, "/");

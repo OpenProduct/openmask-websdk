@@ -9,6 +9,10 @@ export declare function parseFriendlyAddress(addressString: string): {
     workchain: number;
     hashPart: Uint8Array;
 };
+export interface HashData {
+    wc: number;
+    hashPart: Uint8Array;
+}
 export declare class Address {
     /**
      * @param anyForm {string | Address}
@@ -23,7 +27,7 @@ export declare class Address {
     /**
      * @param anyForm {string | Address}
      */
-    constructor(anyForm: string | Address);
+    constructor(anyForm: string | Address | HashData);
     /**
      * @param isUserFriendly? {boolean}
      * @param isUrlSafe? {boolean}

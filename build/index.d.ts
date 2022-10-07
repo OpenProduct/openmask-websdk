@@ -6,6 +6,4 @@ export * from "./contract/dns/utils";
 export * from "./contract/token";
 export * from "./contract/wallet";
 export * from "./providers/httpProvider";
-export * from "./utils/address";
-export * from "./utils/transfer";
-export * from "./utils/utils";
+export * from "./utils";
