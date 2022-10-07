@@ -1,3 +1,5 @@
+/// <reference types="node" />
+import BN from "bn.js";
 import { Pair } from "./httpProviderUtils";
 export interface EstimateFeeValues {
     in_fwd_fee: number;
@@ -45,6 +47,32 @@ export declare class HttpProvider {
      * @param address {string}
      */
     getAddressInfo(address: string): Promise<any>;
+    /**
+     * Check if contract is deployed
+     * @param address addres to check
+     * @returns true if contract is in active state
+     */
+    isContractDeployed: (address: string) => Promise<boolean>;
+    /**
+     * Resolves contract state
+     * @param address contract address
+     */
+    getContractState: (address: string) => Promise<{
+        balance: BN;
+        state: "frozen" | "active" | "uninitialized";
+        code: Buffer | null;
+        data: Buffer | null;
+        lastTransaction: {
+            lt: any;
+            hash: any;
+        } | null;
+        blockId: {
+            workchain: any;
+            shard: any;
+            seqno: any;
+        };
+        timestampt: any;
+    }>;
     /**
      * Similar to previous one but tries to parse additional information for known contract types. This method is based on generic.getAccountState thus number of recognizable contracts may grow. For wallets we recommend to use getWalletInformation.
      * @param address {string}

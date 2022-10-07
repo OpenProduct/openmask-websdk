@@ -90,6 +90,44 @@ export class HttpProvider {
   }
 
   /**
+   * Check if contract is deployed
+   * @param address addres to check
+   * @returns true if contract is in active state
+   */
+  isContractDeployed = async (address: string) => {
+    return (await this.getContractState(address)).state === "active";
+  };
+
+  /**
+   * Resolves contract state
+   * @param address contract address
+   */
+  getContractState = async (address: string) => {
+    let info = await this.getAddressInfo(address);
+    let balance = new BN(info.balance);
+    let state = info.state as "frozen" | "active" | "uninitialized";
+    return {
+      balance,
+      state,
+      code: info.code !== "" ? Buffer.from(info.code, "base64") : null,
+      data: info.data !== "" ? Buffer.from(info.data, "base64") : null,
+      lastTransaction:
+        info.last_transaction_id.lt !== "0"
+          ? {
+              lt: info.last_transaction_id.lt,
+              hash: info.last_transaction_id.hash,
+            }
+          : null,
+      blockId: {
+        workchain: info.block_id.workchain,
+        shard: info.block_id.shard,
+        seqno: info.block_id.seqno,
+      },
+      timestampt: info.sync_utime,
+    };
+  };
+
+  /**
    * Similar to previous one but tries to parse additional information for known contract types. This method is based on generic.getAccountState thus number of recognizable contracts may grow. For wallets we recommend to use getWalletInformation.
    * @param address {string}
    */
