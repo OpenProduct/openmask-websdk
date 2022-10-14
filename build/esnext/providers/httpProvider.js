@@ -28,6 +28,8 @@ export class TonHttpProvider {
         }
         const response = await fetch(apiUrl, {
             method: "POST",
+            redirect: "follow",
+            mode: "cors",
             headers: headers,
             body: JSON.stringify(request),
         });
