@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 export interface JettonData {
     totalSupply: BN;
@@ -13,7 +13,7 @@ export interface JettonData {
 export declare class JettonMinterDao {
     private provider;
     private jettonMinterAddress;
-    constructor(provider: HttpProvider, jettonMinterAddress: Address);
+    constructor(provider: TonHttpProvider, jettonMinterAddress: Address);
     /**
      * @return {Promise<JettonData>}
      */

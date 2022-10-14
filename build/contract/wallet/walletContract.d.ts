@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../boc/cell";
-import HttpProvider from "../../providers/httpProvider";
+import TonHttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
 import { Contract, ExternalMessage, Options } from "../contract";
 export interface TransferParams {
@@ -17,7 +17,7 @@ export interface TransferParams {
  */
 export declare class WalletContract extends Contract {
     deploy: (secretKey: Uint8Array) => void;
-    constructor(provider: HttpProvider, options: Options);
+    constructor(provider: TonHttpProvider, options: Options);
     transfer: (params: TransferParams) => import("../contract").Method;
     seqno: () => {
         call: () => Promise<number | null>;

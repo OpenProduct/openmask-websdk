@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { Contract } from "../../contract";
 import { NftContractDao } from "./nftContractDao";
@@ -19,7 +19,7 @@ export interface NftItemOptions {
 }
 
 export class NftItem extends Contract {
-  constructor(provider: HttpProvider, options: NftItemOptions) {
+  constructor(provider: TonHttpProvider, options: NftItemOptions) {
     options.wc = 0;
     options.code = options.code || Cell.oneFromBoc(NFT_ITEM_CODE_HEX);
     super(provider, options);

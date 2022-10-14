@@ -1,5 +1,5 @@
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { Contract } from "../../contract";
 import { JettonWalletDao } from "./jettonWalletDao";
@@ -19,7 +19,7 @@ export class JettonWallet extends Contract {
    * @param provider
    * @param options   {{address?: Address | string, code?: Cell}}
    */
-  constructor(provider: HttpProvider, options: JettonWalletOptions) {
+  constructor(provider: TonHttpProvider, options: JettonWalletOptions) {
     options.wc = 0;
     options.code = options.code || Cell.oneFromBoc(JETTON_WALLET_CODE_HEX);
     super(provider, options);

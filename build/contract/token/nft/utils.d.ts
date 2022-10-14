@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 export declare const SNAKE_DATA_PREFIX = 0;
 export declare const CHUNK_DATA_PREFIX = 1;
@@ -32,11 +32,11 @@ export declare const parseOffchainUriCell: (cell: Cell) => string;
  */
 export declare const parseAddress: (cell: Cell) => Address | null;
 /**
- * @param provider {HttpProvider}
+ * @param provider {TonHttpProvider}
  * @param address {string}
  * @return {Promise<{royalty: number, royaltyFactor: number, royaltyBase: number, royaltyAddress: Address}>}
  */
-export declare const getRoyaltyParams: (provider: HttpProvider, address: string) => Promise<{
+export declare const getRoyaltyParams: (provider: TonHttpProvider, address: string) => Promise<{
     royalty: number;
     royaltyBase: any;
     royaltyFactor: any;

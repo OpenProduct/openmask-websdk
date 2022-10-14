@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 export interface NftData {
     isInitialized: boolean;
@@ -12,9 +12,9 @@ export interface NftData {
     contentUri: string | null;
 }
 export declare class NftContractDao {
-    provider: HttpProvider;
+    provider: TonHttpProvider;
     address: Address;
-    constructor(provider: HttpProvider, address: Address);
+    constructor(provider: TonHttpProvider, address: Address);
     getData(): Promise<NftData>;
     /**
      * for single nft without collection

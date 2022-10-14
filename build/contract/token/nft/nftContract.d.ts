@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { Contract } from "../../contract";
 export interface NftItemOptions {
@@ -11,7 +11,7 @@ export interface NftItemOptions {
     code?: Cell;
 }
 export declare class NftItem extends Contract {
-    constructor(provider: HttpProvider, options: NftItemOptions);
+    constructor(provider: TonHttpProvider, options: NftItemOptions);
     /**
      * @override
      * @private

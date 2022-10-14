@@ -1,4 +1,4 @@
-import { HttpProvider } from "../../providers/httpProvider";
+import { TonHttpProvider } from "../../providers/httpProvider";
 import Address from "../../utils/address";
 import { dnsResolve, DNS_CATEGORY_WALLET } from "./utils";
 
@@ -8,12 +8,12 @@ interface DnsConfig {
 
 export class Dns {
   /**
-   * @param provider  {HttpProvider}
+   * @param provider  {TonHttpProvider}
    */
-  provider: HttpProvider;
+  provider: TonHttpProvider;
   config: DnsConfig;
 
-  constructor(provider: HttpProvider, config: DnsConfig) {
+  constructor(provider: TonHttpProvider, config: DnsConfig) {
     this.provider = provider;
     this.config = config;
   }

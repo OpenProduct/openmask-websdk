@@ -1,4 +1,4 @@
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { NftCollectionDao } from "./nftCollectionDao";
 import { NftContractDao, NftData } from "./nftContractDao";
@@ -7,11 +7,11 @@ import { NftContractDao, NftData } from "./nftContractDao";
  * Documentation: https://github.com/ton-blockchain/TIPs/issues/62
  */
 export class NftContentDao {
-  provider: HttpProvider;
+  provider: TonHttpProvider;
   address: Address;
   nftContractDao: NftContractDao;
 
-  constructor(provider: HttpProvider, address: Address) {
+  constructor(provider: TonHttpProvider, address: Address) {
     this.provider = provider;
     this.address = address;
     this.nftContractDao = new NftContractDao(provider, address);

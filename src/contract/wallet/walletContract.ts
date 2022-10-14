@@ -1,7 +1,7 @@
 import BN from "bn.js";
 import nacl from "tweetnacl";
 import { Cell } from "../../boc/cell";
-import HttpProvider from "../../providers/httpProvider";
+import TonHttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
 import { Contract, ExternalMessage, Options } from "../contract";
 
@@ -21,7 +21,7 @@ export interface TransferParams {
 export class WalletContract extends Contract {
   deploy: (secretKey: Uint8Array) => void;
 
-  constructor(provider: HttpProvider, options: Options) {
+  constructor(provider: TonHttpProvider, options: Options) {
     if (!options.publicKey && !options.address)
       throw new Error(
         "WalletContract required publicKey or address in options"

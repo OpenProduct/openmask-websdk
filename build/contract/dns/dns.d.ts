@@ -1,16 +1,16 @@
 /// <reference types="bn.js" />
-import { HttpProvider } from "../../providers/httpProvider";
+import { TonHttpProvider } from "../../providers/httpProvider";
 import Address from "../../utils/address";
 interface DnsConfig {
     rootDnsAddress: string;
 }
 export declare class Dns {
     /**
-     * @param provider  {HttpProvider}
+     * @param provider  {TonHttpProvider}
      */
-    provider: HttpProvider;
+    provider: TonHttpProvider;
     config: DnsConfig;
-    constructor(provider: HttpProvider, config: DnsConfig);
+    constructor(provider: TonHttpProvider, config: DnsConfig);
     /**
      * @returns {Promise<Address>}
      */

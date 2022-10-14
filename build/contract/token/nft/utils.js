@@ -83,7 +83,7 @@ export const parseAddress = (cell) => {
     return new Address(s);
 };
 /**
- * @param provider {HttpProvider}
+ * @param provider {TonHttpProvider}
  * @param address {string}
  * @return {Promise<{royalty: number, royaltyFactor: number, royaltyBase: number, royaltyAddress: Address}>}
  */

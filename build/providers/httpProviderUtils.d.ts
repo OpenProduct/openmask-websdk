@@ -4,7 +4,7 @@ interface Result {
     exit_code: number;
     stack: Pair[];
 }
-export declare class HttpProviderUtils {
+export declare class TonHttpProviderUtils {
     static parseObject(x: any): any;
     /**
      * @param pair  {any[]}

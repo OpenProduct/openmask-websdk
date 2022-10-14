@@ -1,13 +1,13 @@
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { NftContractDao, NftData } from "./nftContractDao";
 /**
  * Documentation: https://github.com/ton-blockchain/TIPs/issues/62
  */
 export declare class NftContentDao {
-    provider: HttpProvider;
+    provider: TonHttpProvider;
     address: Address;
     nftContractDao: NftContractDao;
-    constructor(provider: HttpProvider, address: Address);
+    constructor(provider: TonHttpProvider, address: Address);
     getData: () => Promise<NftData>;
 }

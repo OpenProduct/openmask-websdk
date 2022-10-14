@@ -77,7 +77,7 @@ export const parseNextResolverRecord = (cell) => {
 };
 /**
  * @private
- * @param provider  {HttpProvider}
+ * @param provider  {TonHttpProvider}
  * @param dnsAddress   {string} address of dns smart contract
  * @param rawDomainBytes {Uint8Array}
  * @param category  {string | undefined} category of requested DNS record
@@ -194,7 +194,7 @@ const domainToBytes = (domain) => {
     return new TextEncoder().encode(rawDomain);
 };
 /**
- * @param provider  {HttpProvider}
+ * @param provider  {TonHttpProvider}
  * @param rootDnsAddress {string} address of root DNS smart contract
  * @param domain    {string} e.g "sub.alice.ton"
  * @param category  {string | undefined} category of requested DNS record

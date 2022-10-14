@@ -2,7 +2,7 @@ import Address from "../../utils/address";
 import { dnsResolve, DNS_CATEGORY_WALLET } from "./utils";
 export class Dns {
     /**
-     * @param provider  {HttpProvider}
+     * @param provider  {TonHttpProvider}
      */
     provider;
     config;

@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../boc/cell";
-import HttpProvider from "../../providers/httpProvider";
+import TonHttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
 import { Options } from "../contract";
 import { WalletContract } from "./walletContract";
@@ -20,7 +20,7 @@ interface PluginParams {
     queryId?: number;
 }
 export declare class WalletV4ContractR2 extends WalletContract {
-    constructor(provider: HttpProvider, options: Options);
+    constructor(provider: TonHttpProvider, options: Options);
     deployAndInstallPlugin: (params: DeployAndInstallPlugin) => import("../contract").Method;
     installPlugin: (params: PluginParams) => import("../contract").Method;
     getName(): string;

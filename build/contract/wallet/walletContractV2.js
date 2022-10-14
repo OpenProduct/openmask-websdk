@@ -27,7 +27,7 @@ export class WalletV2ContractBase extends WalletContract {
 }
 export class WalletV2ContractR1 extends WalletV2ContractBase {
     /**
-     * @param provider    {HttpProvider}
+     * @param provider    {TonHttpProvider}
      * @param options? {any}
      */
     constructor(provider, options) {
@@ -40,7 +40,7 @@ export class WalletV2ContractR1 extends WalletV2ContractBase {
 }
 export class WalletV2ContractR2 extends WalletV2ContractBase {
     /**
-     * @param provider    {HttpProvider}
+     * @param provider    {TonHttpProvider}
      * @param options? {any}
      */
     constructor(provider, options) {

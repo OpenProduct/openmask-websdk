@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { getRoyaltyParams, parseAddress, parseOffchainUriCell } from "./utils";
 
@@ -15,10 +15,10 @@ export interface NftData {
 }
 
 export class NftContractDao {
-  provider: HttpProvider;
+  provider: TonHttpProvider;
   address: Address;
 
-  constructor(provider: HttpProvider, address: Address) {
+  constructor(provider: TonHttpProvider, address: Address) {
     this.provider = provider;
     this.address = address;
   }

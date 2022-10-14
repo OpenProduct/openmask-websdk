@@ -7,7 +7,7 @@ export class Contract {
     address;
     methods;
     /**
-     * @param provider    {HttpProvider}
+     * @param provider    {TonHttpProvider}
      * @param options    {{code?: Cell, address?: Address | string, wc?: number}}
      */
     constructor(provider, options) {

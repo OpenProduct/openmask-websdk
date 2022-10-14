@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { Contract } from "../../contract";
 export interface JettonMinterOptions {
@@ -16,7 +16,7 @@ export declare class JettonMinter extends Contract {
      * @param provider
      * @param options   {{adminAddress: Address, jettonContentUri: string, jettonWalletCodeHex: string, address?: Address | string, code?: Cell}}
      */
-    constructor(provider: HttpProvider, options: JettonMinterOptions);
+    constructor(provider: TonHttpProvider, options: JettonMinterOptions);
     /**
      * @override
      * @private

@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { bytesToBase64 } from "../../../utils/utils";
 import { parseAddress, parseOffchainUriCell } from "../nft/utils";
@@ -15,10 +15,10 @@ export interface JettonData {
 }
 
 export class JettonMinterDao {
-  private provider: HttpProvider;
+  private provider: TonHttpProvider;
   private jettonMinterAddress: Address;
 
-  constructor(provider: HttpProvider, jettonMinterAddress: Address) {
+  constructor(provider: TonHttpProvider, jettonMinterAddress: Address) {
     this.provider = provider;
     this.jettonMinterAddress = jettonMinterAddress;
   }

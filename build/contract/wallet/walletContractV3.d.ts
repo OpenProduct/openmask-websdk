@@ -1,5 +1,5 @@
 import { Cell } from "../../boc/cell";
-import HttpProvider from "../../providers/httpProvider";
+import TonHttpProvider from "../../providers/httpProvider";
 import { Options } from "../contract";
 import { WalletContract } from "./walletContract";
 declare class WalletV3ContractBase extends WalletContract {
@@ -18,18 +18,18 @@ declare class WalletV3ContractBase extends WalletContract {
 }
 export declare class WalletV3ContractR1 extends WalletV3ContractBase {
     /**
-     * @param provider    {HttpProvider}
+     * @param provider    {TonHttpProvider}
      * @param options {any}
      */
-    constructor(provider: HttpProvider, options: Options);
+    constructor(provider: TonHttpProvider, options: Options);
     getName(): string;
 }
 export declare class WalletV3ContractR2 extends WalletV3ContractBase {
     /**
-     * @param provider    {HttpProvider}
+     * @param provider    {TonHttpProvider}
      * @param options {any}
      */
-    constructor(provider: HttpProvider, options: Options);
+    constructor(provider: TonHttpProvider, options: Options);
     getName(): string;
 }
 export {};

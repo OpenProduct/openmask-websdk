@@ -16,7 +16,7 @@ interface JRPSRequest {
     method: string;
     params: any;
 }
-export declare class HttpProvider {
+export declare class TonHttpProvider {
     SHARD_ID_ALL: string;
     host: string;
     options: {
@@ -109,12 +109,6 @@ export declare class HttpProvider {
      */
     sendBoc(base64: string): Promise<any>;
     /**
-     * @deprecated
-     * Send external message
-     * @param query     object as described https://toncenter.com/api/test/v2/#sendQuerySimple
-     */
-    sendQuery<Payload>(query: Payload): Promise<any>;
-    /**
      * @param query     object as described https://toncenter.com/api/test/v2/#estimateFee
      * @return fees object
      */
@@ -168,4 +162,4 @@ export declare class HttpProvider {
      */
     getMasterchainBlockHeader(masterchainBlockNumber: number): Promise<any>;
 }
-export default HttpProvider;
+export default TonHttpProvider;

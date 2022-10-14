@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../boc/cell";
-import HttpProvider from "../../providers/httpProvider";
+import TonHttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
 import { bytesToBase64, bytesToHex, sha256 } from "../../utils/utils";
 import { parseAddress } from "../token/nft/utils";
@@ -93,7 +93,7 @@ export const parseNextResolverRecord = (cell: Cell) => {
 
 /**
  * @private
- * @param provider  {HttpProvider}
+ * @param provider  {TonHttpProvider}
  * @param dnsAddress   {string} address of dns smart contract
  * @param rawDomainBytes {Uint8Array}
  * @param category  {string | undefined} category of requested DNS record
@@ -101,7 +101,7 @@ export const parseNextResolverRecord = (cell: Cell) => {
  * @returns {Promise<Cell | Address | BN | null>}
  */
 const dnsResolveImpl = async (
-  provider: HttpProvider,
+  provider: TonHttpProvider,
   dnsAddress: string,
   rawDomainBytes: Uint8Array,
   category: string | undefined,
@@ -231,7 +231,7 @@ const domainToBytes = (domain: string) => {
 };
 
 /**
- * @param provider  {HttpProvider}
+ * @param provider  {TonHttpProvider}
  * @param rootDnsAddress {string} address of root DNS smart contract
  * @param domain    {string} e.g "sub.alice.ton"
  * @param category  {string | undefined} category of requested DNS record
@@ -239,7 +239,7 @@ const domainToBytes = (domain: string) => {
  * @returns {Promise<Cell | Address | BN | null>}
  */
 export const dnsResolve = async (
-  provider: HttpProvider,
+  provider: TonHttpProvider,
   rootDnsAddress: string,
   domain: string,
   category: string | undefined,

@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 export interface JettonWalletData {
     balance: BN;
@@ -11,6 +11,6 @@ export interface JettonWalletData {
 export declare class JettonWalletDao {
     private provider;
     private jettonWalletAddress;
-    constructor(provider: HttpProvider, jettonWalletAddress: Address);
+    constructor(provider: TonHttpProvider, jettonWalletAddress: Address);
     getData(): Promise<JettonWalletData>;
 }

@@ -1,9 +1,9 @@
 import { Cell } from "../../boc/cell";
-import HttpProvider from "../../providers/httpProvider";
+import TonHttpProvider from "../../providers/httpProvider";
 import { Options } from "../contract";
 import { WalletContract } from "./walletContract";
 export declare class WalletV4ContractR1 extends WalletContract {
-    constructor(provider: HttpProvider, options: Options);
+    constructor(provider: TonHttpProvider, options: Options);
     getName(): string;
     /**
      * @override

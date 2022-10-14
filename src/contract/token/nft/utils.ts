@@ -1,7 +1,7 @@
 import BN from "bn.js";
 import { BitString } from "../../../boc/bitString";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 
 export const SNAKE_DATA_PREFIX = 0x00;
@@ -94,12 +94,12 @@ export const parseAddress = (cell: Cell) => {
 };
 
 /**
- * @param provider {HttpProvider}
+ * @param provider {TonHttpProvider}
  * @param address {string}
  * @return {Promise<{royalty: number, royaltyFactor: number, royaltyBase: number, royaltyAddress: Address}>}
  */
 export const getRoyaltyParams = async (
-  provider: HttpProvider,
+  provider: TonHttpProvider,
   address: string
 ) => {
   const result = await provider.call2(address, "royalty_params");

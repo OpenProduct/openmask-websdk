@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../boc/cell";
-import HttpProvider, { EstimateFee } from "../providers/httpProvider";
+import TonHttpProvider, { EstimateFee } from "../providers/httpProvider";
 import Address from "../utils/address";
 import { bytesToBase64, bytesToHex } from "../utils/utils";
 
@@ -30,16 +30,16 @@ export interface Method {
 }
 
 export class Contract {
-  provider: HttpProvider;
+  provider: TonHttpProvider;
   options: Options;
   address: Address | null;
   methods: Record<string, any>;
 
   /**
-   * @param provider    {HttpProvider}
+   * @param provider    {TonHttpProvider}
    * @param options    {{code?: Cell, address?: Address | string, wc?: number}}
    */
-  constructor(provider: HttpProvider, options: Options) {
+  constructor(provider: TonHttpProvider, options: Options) {
     this.provider = provider;
     this.options = options;
     this.address = options.address ? new Address(options.address) : null;
@@ -266,7 +266,7 @@ export class Contract {
   }
 
   static createMethod(
-    provider: HttpProvider,
+    provider: TonHttpProvider,
     queryPromise: Promise<ExternalMessage>
   ): Method {
     return {

@@ -1,5 +1,5 @@
 import BN from "bn.js";
-import { HttpProviderUtils, Pair } from "./httpProviderUtils";
+import { Pair, TonHttpProviderUtils } from "./httpProviderUtils";
 
 const SHARD_ID_ALL = "-9223372036854775808"; // 0x8000000000000000
 
@@ -21,7 +21,7 @@ interface JRPSRequest {
   params: any;
 }
 
-export class HttpProvider {
+export class TonHttpProvider {
   SHARD_ID_ALL = SHARD_ID_ALL;
 
   host: string;
@@ -200,15 +200,6 @@ export class HttpProvider {
   }
 
   /**
-   * @deprecated
-   * Send external message
-   * @param query     object as described https://toncenter.com/api/test/v2/#sendQuerySimple
-   */
-  async sendQuery<Payload>(query: Payload) {
-    return this.send("sendQuerySimple", query);
-  }
-
-  /**
    * @param query     object as described https://toncenter.com/api/test/v2/#estimateFee
    * @return fees object
    */
@@ -243,7 +234,7 @@ export class HttpProvider {
       method: method,
       stack: params,
     });
-    return HttpProviderUtils.parseResponse(result);
+    return TonHttpProviderUtils.parseResponse(result);
   }
 
   /**
@@ -316,4 +307,4 @@ export class HttpProvider {
   }
 }
 
-export default HttpProvider;
+export default TonHttpProvider;

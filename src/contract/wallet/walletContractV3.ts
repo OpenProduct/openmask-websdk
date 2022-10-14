@@ -1,5 +1,5 @@
 import { Cell } from "../../boc/cell";
-import HttpProvider from "../../providers/httpProvider";
+import TonHttpProvider from "../../providers/httpProvider";
 import { Options } from "../contract";
 import { WalletContract } from "./walletContract";
 
@@ -43,10 +43,10 @@ class WalletV3ContractBase extends WalletContract {
 
 export class WalletV3ContractR1 extends WalletV3ContractBase {
   /**
-   * @param provider    {HttpProvider}
+   * @param provider    {TonHttpProvider}
    * @param options {any}
    */
-  constructor(provider: HttpProvider, options: Options) {
+  constructor(provider: TonHttpProvider, options: Options) {
     options.code = Cell.oneFromBoc(
       "B5EE9C724101010100620000C0FF0020DD2082014C97BA9730ED44D0D70B1FE0A4F2608308D71820D31FD31FD31FF82313BBF263ED44D0D31FD31FD3FFD15132BAF2A15144BAF2A204F901541055F910F2A3F8009320D74A96D307D402FB00E8D101A4C8CB1FCB1FCBFFC9ED543FBE6EE0"
     );
@@ -62,10 +62,10 @@ export class WalletV3ContractR1 extends WalletV3ContractBase {
 
 export class WalletV3ContractR2 extends WalletV3ContractBase {
   /**
-   * @param provider    {HttpProvider}
+   * @param provider    {TonHttpProvider}
    * @param options {any}
    */
-  constructor(provider: HttpProvider, options: Options) {
+  constructor(provider: TonHttpProvider, options: Options) {
     options.code = Cell.oneFromBoc(
       "B5EE9C724101010100710000DEFF0020DD2082014C97BA218201339CBAB19F71B0ED44D0D31FD31F31D70BFFE304E0A4F2608308D71820D31FD31FD31FF82313BBF263ED44D0D31FD31FD3FFD15132BAF2A15144BAF2A204F901541055F910F2A3F8009320D74A96D307D402FB00E8D101A4C8CB1FCB1FCBFFC9ED5410BD6DAD"
     );

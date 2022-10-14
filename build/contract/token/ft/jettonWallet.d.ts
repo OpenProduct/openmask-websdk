@@ -1,6 +1,6 @@
 /// <reference types="bn.js" />
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { Contract } from "../../contract";
 export interface JettonWalletOptions {
@@ -13,7 +13,7 @@ export declare class JettonWallet extends Contract {
      * @param provider
      * @param options   {{address?: Address | string, code?: Cell}}
      */
-    constructor(provider: HttpProvider, options: JettonWalletOptions);
+    constructor(provider: TonHttpProvider, options: JettonWalletOptions);
     createTransferBody: (params: {
         queryId?: number | undefined;
         jettonAmount: import("bn.js");

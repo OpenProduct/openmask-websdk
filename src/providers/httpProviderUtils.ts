@@ -24,21 +24,21 @@ class ProviderError extends Error {
   }
 }
 
-export class HttpProviderUtils {
+export class TonHttpProviderUtils {
   static parseObject(x: any): any {
     const typeName = x["@type"];
     switch (typeName) {
       case "tvm.list":
       case "tvm.tuple":
-        return x.elements.map(HttpProviderUtils.parseObject);
+        return x.elements.map(TonHttpProviderUtils.parseObject);
       case "tvm.cell":
         return Cell.oneFromBoc(base64ToBytes(x.bytes));
       case "tvm.stackEntryCell":
-        return HttpProviderUtils.parseObject(x.cell);
+        return TonHttpProviderUtils.parseObject(x.cell);
       case "tvm.stackEntryTuple":
-        return HttpProviderUtils.parseObject(x.tuple);
+        return TonHttpProviderUtils.parseObject(x.tuple);
       case "tvm.stackEntryNumber":
-        return HttpProviderUtils.parseObject(x.number);
+        return TonHttpProviderUtils.parseObject(x.number);
       case "tvm.numberDecimal":
         return new BN(x.number, 10);
       default:
@@ -59,7 +59,7 @@ export class HttpProviderUtils {
         return new BN(value.replace(/0x/, ""), 16);
       case "list":
       case "tuple":
-        return HttpProviderUtils.parseObject(value);
+        return TonHttpProviderUtils.parseObject(value);
       case "cell":
         const contentBytes = base64ToBytes(value.bytes);
         return Cell.oneFromBoc(contentBytes);
@@ -77,7 +77,7 @@ export class HttpProviderUtils {
       throw err;
     }
 
-    const arr = result.stack.map(HttpProviderUtils.parseResponseStack);
+    const arr = result.stack.map(TonHttpProviderUtils.parseResponseStack);
     return arr.length === 1 ? arr[0] : arr;
   }
 

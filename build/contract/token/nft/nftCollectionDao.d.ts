@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
-import HttpProvider from "../../../providers/httpProvider";
+import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
 import { NftData } from "./nftContractDao";
 export interface NftCollectionData {
@@ -11,9 +11,9 @@ export interface NftCollectionData {
     collectionContentUri: string | null;
 }
 export declare class NftCollectionDao {
-    provider: HttpProvider;
+    provider: TonHttpProvider;
     address: Address;
-    constructor(provider: HttpProvider, address: Address);
+    constructor(provider: TonHttpProvider, address: Address);
     /**
      * @return {Promise<{nextItemIndex: number, itemsCount: BN, ownerAddress: Address, collectionContentCell: Cell, collectionContentUri: string|null}>}
      */
