@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
-    "outDir": "build",
+    "outDir": "build/esnext",
     "declaration": true
   },
   "include": ["src"]

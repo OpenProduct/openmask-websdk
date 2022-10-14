@@ -2,10 +2,10 @@
   "name": "@openmask/web-sdk",
   "version": "0.1.0",
   "description": "OpenMask Web - Browser TypeScript API for TON blockchain",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "build/esnext/index.js",
+  "types": "build/esnext/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc; tsc --module commonjs --outDir build/cjs"
   },
   "keywords": [
     "TON",
