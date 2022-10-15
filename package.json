@@ -1,5 +1,5 @@
 {
-  "name": "@openmask/web-sdk",
+  "name": "@openproduct/web-sdk",
   "version": "0.1.0",
   "description": "OpenMask Web - Browser TypeScript API for TON blockchain",
   "main": "build/esnext/index.js",
@@ -17,7 +17,10 @@
     "url": "https://github.com/OpenProduct/openmask-websdk/issues"
   },
   "homepage": "https://github.com/OpenProduct/openmask-websdk#readme",
-  "repository": "https://github.com/OpenProduct/openmask-websdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpenProduct/openmask-websdk.git"
+  },
   "dependencies": {
     "bn.js": "4.11.6",
     "ethjs-unit": "0.1.6",
@@ -28,5 +31,9 @@
     "@types/bn.js": "^5.1.0",
     "buffer": "6.0.3",
     "typescript": "^4.8.2"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "author": "Nikita Kuznetsov"
 }
