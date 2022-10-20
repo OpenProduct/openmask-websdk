@@ -1,6 +1,6 @@
 import Address from "../../utils/address";
 import { dnsResolve, DNS_CATEGORY_WALLET } from "./utils";
-export class Dns {
+export class TonDns {
     /**
      * @param provider  {TonHttpProvider}
      */
@@ -34,4 +34,4 @@ export class Dns {
         return this.resolve(domain, DNS_CATEGORY_WALLET);
     }
 }
-export default Dns;
+export default TonDns;

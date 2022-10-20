@@ -4,7 +4,7 @@ import Address from "../../utils/address";
 interface DnsConfig {
     rootDnsAddress: string;
 }
-export declare class Dns {
+export declare class TonDns {
     /**
      * @param provider  {TonHttpProvider}
      */
@@ -28,4 +28,4 @@ export declare class Dns {
      */
     getWalletAddress(domain: string): Promise<import("bn.js") | Address | import("../..").Cell | null>;
 }
-export default Dns;
+export default TonDns;

@@ -1,3 +1,4 @@
+export * from "./boc/beingCell";
 export * from "./boc/bitString";
 export * from "./boc/cell";
 export * from "./contract/contract";

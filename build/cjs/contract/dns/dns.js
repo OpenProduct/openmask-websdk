@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Dns = void 0;
+exports.TonDns = void 0;
 const address_1 = __importDefault(require("../../utils/address"));
 const utils_1 = require("./utils");
-class Dns {
+class TonDns {
     /**
      * @param provider  {TonHttpProvider}
      */
@@ -40,5 +40,5 @@ class Dns {
         return this.resolve(domain, utils_1.DNS_CATEGORY_WALLET);
     }
 }
-exports.Dns = Dns;
-exports.default = Dns;
+exports.TonDns = TonDns;
+exports.default = TonDns;
