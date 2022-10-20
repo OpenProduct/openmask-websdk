@@ -6,7 +6,7 @@ interface DnsConfig {
   rootDnsAddress: string;
 }
 
-export class Dns {
+export class TonDns {
   /**
    * @param provider  {TonHttpProvider}
    */
@@ -51,4 +51,4 @@ export class Dns {
   }
 }
 
-export default Dns;
+export default TonDns;

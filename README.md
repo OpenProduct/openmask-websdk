@@ -2,18 +2,26 @@
 
 Converted to typescript [TonWeb](https://github.com/toncenter/tonweb)
 
-To be typesave OpenMask team change some methods.
-
 ## Install Web
 
-`npm install github:TonMask/tonmask-websdk` or `yarn add github:TonMask/tonmask-websdk`
+```
+npm install @openproduct/web-sdk
 
-### HttpProvider
+// or
+
+yarn add @openproduct/web-sdk
+
+// or
+
+pnpm add @openproduct/web-sdk
+```
+
+### TonHttpProvider
 
 ```ts
-import { HttpProvider } from "@tonmask/web-sdk";
+import { TonHttpProvider } from "@openproduct/web-sdk";
 
-const provider = new HttpProvider(config.rpcUrl, {
+const provider = new TonHttpProvider(config.rpcUrl, {
   apiKey: config.apiKey,
 });
 
@@ -22,17 +30,15 @@ const amount: string = await provider.getBalance(wallet);
 
 // Get Wallet SeqNo
 const seqno: BN = await provider.call2(wallet, "seqno");
-  
+
 // Get wallet transactions
-const transactions = await ton.getTransactions(wallet, 10)
-  
+const transactions = await ton.getTransactions(wallet, 10);
 ```
 
 ### Send transaction
 
 ```ts
-
-import { ALL, hexToBytes, toNano } from "@tonmask/web-sdk";
+import { ALL, hexToBytes, toNano } from "@openproduct/web-sdk";
 
 const WalletClass = ALL[wallet.version];
 const contract = new WalletClass(provider, {
@@ -57,7 +63,6 @@ const fees = await method.estimateFee();
 // Send transaction
 
 await method.send();
-
 ```
 
 ### TonDNS
@@ -65,7 +70,7 @@ await method.send();
 Resolve ton DNS address:
 
 ```ts
-import { Dns } from "@tonmask/web-sdk";
+import { Dns } from "@openproduct/web-sdk";
 
 const dns = new Dns(provider, { rootDnsAddress: config.rootDnsAddress });
 const address = await dns.getWalletAddress(toAddress);
@@ -75,5 +80,4 @@ if (!address) {
 if (!Address.isValid(address)) {
   throw new Error("Invalid address");
 }
-
 ```
