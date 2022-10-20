@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import BN from "bn.js";
 import Address from "../utils/address";
 export declare class BitString {
@@ -8,6 +9,7 @@ export declare class BitString {
      * @param length {number}    length of BitString in bits
      */
     constructor(length: number);
+    static alloc(length: number): BitString;
     /**
      * @return {number}
      */
@@ -104,6 +106,8 @@ export declare class BitString {
      * @param anotherBitString  {BitString}
      */
     writeBitString(anotherBitString: BitString): void;
+    writeVarUInt(value: BN | number, headerBits: number): void;
+    writeBuffer: (buffer: Buffer) => void;
     clone(): BitString;
     /**
      * @return {string} hex

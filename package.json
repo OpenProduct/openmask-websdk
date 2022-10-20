@@ -1,9 +1,14 @@
 {
   "name": "@openproduct/web-sdk",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "OpenMask Web - Browser TypeScript API for TON blockchain",
   "main": "build/esnext/index.js",
   "types": "build/esnext/index.d.ts",
+  "exports": {
+    ".": "./build/esnext/index.js",
+    "./esnext": "./build/esnext/index.js",
+    "./cjs": "./build/cjs/index.js"
+  },
   "scripts": {
     "build": "tsc; tsc --module commonjs --outDir build/cjs",
     "deploy": "npm publish --access public"

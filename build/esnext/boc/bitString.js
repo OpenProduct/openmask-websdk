@@ -12,6 +12,9 @@ export class BitString {
         this.cursor = 0;
         this.length = length;
     }
+    static alloc(length) {
+        return new BitString(length);
+    }
     /**
      * @return {number}
      */
@@ -108,11 +111,13 @@ export class BitString {
      */
     writeUint(number, bitLength) {
         number = new BN(number);
-        if (bitLength == 0 ||
-            (number.toString(2).length > bitLength)) {
+        if (bitLength == 0 || number.toString(2).length > bitLength) {
             if (number.toNumber() == 0)
                 return;
-            throw Error("bitLength is too small for number, got number=" + number + ",bitLength=" + bitLength);
+            throw Error("bitLength is too small for number, got number=" +
+                number +
+                ",bitLength=" +
+                bitLength);
         }
         const s = number.toString(2, bitLength);
         for (let i = 0; i < bitLength; i++) {
@@ -183,7 +188,7 @@ export class BitString {
         }
         else {
             amount = new BN(amount);
-            const l = Math.ceil((amount.toString(16).length) / 2);
+            const l = Math.ceil(amount.toString(16).length / 2);
             this.writeUint(l, 4);
             this.writeUint(amount, l * 8);
         }
@@ -216,10 +221,30 @@ export class BitString {
      * @param anotherBitString  {BitString}
      */
     writeBitString(anotherBitString) {
-        anotherBitString.forEach(x => {
+        anotherBitString.forEach((x) => {
             this.writeBit(x);
         });
     }
+    writeVarUInt(value, headerBits) {
+        let v = new BN(value);
+        if (v.eq(new BN(0))) {
+            this.writeUint(0, headerBits);
+        }
+        else {
+            let h = v.toString("hex");
+            while (h.length % 2 !== 0) {
+                h = "0" + h;
+            }
+            const l = Math.ceil(h.length / 2);
+            this.writeUint(l, headerBits);
+            this.writeBuffer(Buffer.from(h, "hex"));
+        }
+    }
+    writeBuffer = (buffer) => {
+        for (let i = 0; i < buffer.length; i++) {
+            this.writeUint8(buffer[i]);
+        }
+    };
     clone() {
         const result = new BitString(0);
         result.array = this.array.slice(0);
@@ -271,7 +296,7 @@ export class BitString {
                 temp.writeBit(0);
             }
             const hex = temp.toHex().toUpperCase();
-            return hex + '_';
+            return hex + "_";
         }
     }
     /**
