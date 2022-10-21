@@ -1,7 +1,7 @@
 {
   "name": "@openproduct/web-sdk",
-  "version": "0.4.0",
-  "description": "OpenMask Web - Browser TypeScript API for TON blockchain",
+  "version": "0.5.0",
+  "description": "OpenMask Web - TypeScript Browser SDK for TON blockchain",
   "main": "build/esnext/index.js",
   "types": "build/esnext/index.d.ts",
   "exports": {

@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deserializeBoc = exports.deserializeCellData = exports.parseBocHeader = exports.treeWalk = exports.moveToTheEnd = exports.Cell = void 0;
 const utils_1 = require("../utils/utils");
 const bitString_1 = require("./bitString");
-const reachBocMagicPrefix = (0, utils_1.hexToBytes)('B5EE9C72');
-const leanBocMagicPrefix = (0, utils_1.hexToBytes)('68ff65f3');
-const leanBocMagicPrefixCRC = (0, utils_1.hexToBytes)('acc3a728');
+const reachBocMagicPrefix = (0, utils_1.hexToBytes)("B5EE9C72");
+const leanBocMagicPrefix = (0, utils_1.hexToBytes)("68ff65f3");
+const leanBocMagicPrefixCRC = (0, utils_1.hexToBytes)("acc3a728");
 class Cell {
     constructor() {
         this.bits = new bitString_1.BitString(1023);
@@ -26,7 +26,7 @@ class Cell {
     static oneFromBoc(serializedBoc) {
         const cells = deserializeBoc(serializedBoc);
         if (cells.length !== 1)
-            throw new Error('expected 1 root cell but have ' + cells.length);
+            throw new Error("expected 1 root cell but have " + cells.length);
         return cells[0];
     }
     /**
@@ -142,11 +142,11 @@ class Cell {
      * @return  {string}
      */
     print(indent) {
-        indent = indent || '';
-        let s = indent + 'x{' + this.bits.toHex() + '}\n';
+        indent = indent || "";
+        let s = indent + "x{" + this.bits.toHex() + "}\n";
         for (let k in this.refs) {
             const i = this.refs[k];
-            s += i.print(indent + ' ');
+            s += i.print(indent + " ");
         }
         return s;
     }
@@ -184,7 +184,9 @@ class Cell {
         for (let cell_info of topologicalOrder) {
             //TODO it should be async map or async for
             sizeIndex.push(full_size);
-            full_size = full_size + await cell_info[1].bocSerializationSize(cellsIndex, s_bytes);
+            full_size =
+                full_size +
+                    (await cell_info[1].bocSerializationSize(cellsIndex, s_bytes));
         }
         const offset_bits = full_size.toString(2).length; // Minimal number of bits to offset/len (unused?)
         const offset_bytes = Math.max(Math.ceil(offset_bits / 8), 1);
@@ -212,6 +214,10 @@ class Cell {
             ser_arr = (0, utils_1.concatBytes)(ser_arr, (0, utils_1.crc32c)(ser_arr));
         }
         return ser_arr;
+    }
+    async toHex(has_idx = true, hash_crc32 = true, has_cache_bits = false, flags = 0) {
+        const boc = await this.toBoc(has_idx, hash_crc32, has_cache_bits, flags);
+        return (0, utils_1.bytesToHex)(boc);
     }
     /**
      * @private
@@ -284,7 +290,8 @@ exports.moveToTheEnd = moveToTheEnd;
  */
 async function treeWalk(cell, topologicalOrderArray, indexHashmap, parentHash = null) {
     const cellHash = await cell.hash();
-    if (cellHash in indexHashmap) { // Duplication cell
+    if (cellHash in indexHashmap) {
+        // Duplication cell
         //it is possible that already seen cell is a children of more deep cell
         if (parentHash) {
             if (indexHashmap[parentHash] > indexHashmap[cellHash]) {
@@ -378,10 +385,19 @@ function parseBocHeader(serializedBoc) {
     if (serializedBoc.length)
         throw "Too much bytes in BoC serialization";
     return {
-        has_idx: has_idx, hash_crc32: hash_crc32, has_cache_bits: has_cache_bits, flags: flags, size_bytes: size_bytes,
-        off_bytes: offset_bytes, cells_num: cells_num, roots_num: roots_num, absent_num: absent_num,
-        tot_cells_size: tot_cells_size, root_list: root_list, index: index,
-        cells_data: cells_data
+        has_idx: has_idx,
+        hash_crc32: hash_crc32,
+        has_cache_bits: has_cache_bits,
+        flags: flags,
+        size_bytes: size_bytes,
+        off_bytes: offset_bytes,
+        cells_num: cells_num,
+        roots_num: roots_num,
+        absent_num: absent_num,
+        tot_cells_size: tot_cells_size,
+        root_list: root_list,
+        index: index,
+        cells_data: cells_data,
     };
 }
 exports.parseBocHeader = parseBocHeader;
@@ -413,7 +429,7 @@ exports.deserializeCellData = deserializeCellData;
  * @return {Cell[]} root cells
  */
 function deserializeBoc(serializedBoc) {
-    if (typeof (serializedBoc) == 'string') {
+    if (typeof serializedBoc == "string") {
         serializedBoc = (0, utils_1.hexToBytes)(serializedBoc);
     }
     const header = parseBocHeader(serializedBoc);
