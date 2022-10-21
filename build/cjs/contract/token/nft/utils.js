@@ -3,8 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.nftGetStaticDataBody = exports.nftTransferBody = exports.getRoyaltyParams = exports.parseAddress = exports.parseOffchainUriCell = exports.createOffchainUriCell = exports.parseUri = exports.serializeUri = exports.OFFCHAIN_CONTENT_PREFIX = exports.ONCHAIN_CONTENT_PREFIX = exports.CHUNK_DATA_PREFIX = exports.SNAKE_DATA_PREFIX = void 0;
+exports.nftGetStaticDataBody = exports.nftTransferBody = exports.getRoyaltyParams = exports.parseAddress = exports.createOffChainContent = exports.makeSnakeCell = exports.parseOffchainUriCell = exports.createOffchainUriCell = exports.parseUri = exports.serializeUri = exports.OFFCHAIN_CONTENT_PREFIX = exports.ONCHAIN_CONTENT_PREFIX = exports.CHUNK_DATA_PREFIX = exports.SNAKE_DATA_PREFIX = void 0;
 const bn_js_1 = __importDefault(require("bn.js"));
+const buffer_1 = require("buffer");
 const cell_1 = require("../../../boc/cell");
 const address_1 = __importDefault(require("../../../utils/address"));
 exports.SNAKE_DATA_PREFIX = 0x00;
@@ -63,6 +64,37 @@ const parseOffchainUriCell = (cell) => {
     return (0, exports.parseUri)(bytes.slice(1)); // slice OFFCHAIN_CONTENT_PREFIX
 };
 exports.parseOffchainUriCell = parseOffchainUriCell;
+function bufferToChunks(buff, chunkSize) {
+    let chunks = [];
+    while (buff.byteLength > 0) {
+        chunks.push(buff.slice(0, chunkSize));
+        buff = buff.slice(chunkSize);
+    }
+    return chunks;
+}
+function makeSnakeCell(data) {
+    let chunks = bufferToChunks(data, 127);
+    let rootCell = new cell_1.Cell();
+    let curCell = rootCell;
+    for (let i = 0; i < chunks.length; i++) {
+        let chunk = chunks[i];
+        curCell.bits.writeBuffer(chunk);
+        if (chunks[i + 1]) {
+            let nextCell = new cell_1.Cell();
+            curCell.refs.push(nextCell);
+            curCell = nextCell;
+        }
+    }
+    return rootCell;
+}
+exports.makeSnakeCell = makeSnakeCell;
+const createOffChainContent = (content) => {
+    let data = buffer_1.Buffer.from(content);
+    let offChainPrefix = buffer_1.Buffer.from([exports.OFFCHAIN_CONTENT_PREFIX]);
+    data = buffer_1.Buffer.concat([offChainPrefix, data]);
+    return makeSnakeCell(data);
+};
+exports.createOffChainContent = createOffChainContent;
 /**
  * @param bs    {BitString}
  * @param cursor    {number}

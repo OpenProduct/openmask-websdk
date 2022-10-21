@@ -1,4 +1,5 @@
 import BN from "bn.js";
+import { Buffer } from "buffer";
 import { Cell } from "../../../boc/cell";
 import Address from "../../../utils/address";
 export const SNAKE_DATA_PREFIX = 0x00;
@@ -52,6 +53,35 @@ export const parseOffchainUriCell = (cell) => {
         c = c.refs[0];
     }
     return parseUri(bytes.slice(1)); // slice OFFCHAIN_CONTENT_PREFIX
+};
+function bufferToChunks(buff, chunkSize) {
+    let chunks = [];
+    while (buff.byteLength > 0) {
+        chunks.push(buff.slice(0, chunkSize));
+        buff = buff.slice(chunkSize);
+    }
+    return chunks;
+}
+export function makeSnakeCell(data) {
+    let chunks = bufferToChunks(data, 127);
+    let rootCell = new Cell();
+    let curCell = rootCell;
+    for (let i = 0; i < chunks.length; i++) {
+        let chunk = chunks[i];
+        curCell.bits.writeBuffer(chunk);
+        if (chunks[i + 1]) {
+            let nextCell = new Cell();
+            curCell.refs.push(nextCell);
+            curCell = nextCell;
+        }
+    }
+    return rootCell;
+}
+export const createOffChainContent = (content) => {
+    let data = Buffer.from(content);
+    let offChainPrefix = Buffer.from([OFFCHAIN_CONTENT_PREFIX]);
+    data = Buffer.concat([offChainPrefix, data]);
+    return makeSnakeCell(data);
 };
 /**
  * @param bs    {BitString}

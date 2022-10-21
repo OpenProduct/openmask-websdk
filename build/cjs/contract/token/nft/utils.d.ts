@@ -1,4 +1,6 @@
+/// <reference types="node" />
 import BN from "bn.js";
+import { Buffer } from "buffer";
 import { Cell } from "../../../boc/cell";
 import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
@@ -26,6 +28,8 @@ export declare const createOffchainUriCell: (uri: string) => Cell;
  * @returns {string}
  */
 export declare const parseOffchainUriCell: (cell: Cell) => string;
+export declare function makeSnakeCell(data: Buffer): Cell;
+export declare const createOffChainContent: (content: string) => Cell;
 /**
  * @param cell  {Cell}
  * @return {Address|null}
