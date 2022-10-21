@@ -70,9 +70,9 @@ await method.send();
 Resolve ton DNS address:
 
 ```ts
-import { Dns } from "@openproduct/web-sdk";
+import { TonDns } from "@openproduct/web-sdk";
 
-const dns = new Dns(provider, { rootDnsAddress: config.rootDnsAddress });
+const dns = new TonDns(provider, { rootDnsAddress: config.rootDnsAddress });
 const address = await dns.getWalletAddress(toAddress);
 if (!address) {
   throw new Error("Invalid address");

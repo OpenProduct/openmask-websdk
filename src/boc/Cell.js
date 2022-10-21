@@ -263,6 +263,7 @@ export class Cell {
     const boc = await this.toBoc(has_idx, hash_crc32, has_cache_bits, flags);
     return bytesToHex(boc);
   }
+
   /**
    * @private
    * @param cellsIndex
