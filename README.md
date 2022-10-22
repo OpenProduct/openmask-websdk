@@ -1,6 +1,8 @@
 # TypeScript SDK for [The Open Network](https://ton.org)
 
-Converted to typescript [TonWeb](https://github.com/toncenter/tonweb)
+[![NPM](https://img.shields.io/npm/v/@openproduct/web-sdk.svg)](https://www.npmjs.org/package/@openproduct/web-sdk)
+
+Converted to typescript [TonWeb](https://github.com/toncenter/tonweb). The library optimise to run in browser.
 
 ## Install Web
 
