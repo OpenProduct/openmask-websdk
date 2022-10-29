@@ -1,5 +1,6 @@
 import BN from "bn.js";
 import Address from "../utils/address";
+import { Cell } from "./cell";
 /**
  * A partial view of a TVM cell, used for parsing data from Cells.
  */
@@ -19,6 +20,7 @@ export declare class Slice {
      * @return {number}
      */
     getFreeBits(): number;
+    getFreeRefs(): number;
     /**
      * @private
      * @param n {number}
@@ -67,4 +69,5 @@ export declare class Slice {
      * @return {Slice}
      */
     loadRef(): Slice;
+    toCell(): Cell;
 }

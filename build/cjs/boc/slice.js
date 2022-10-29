@@ -8,6 +8,7 @@ const bn_js_1 = __importDefault(require("bn.js"));
 const address_1 = __importDefault(require("../utils/address"));
 const utils_1 = require("../utils/utils");
 const bitString_1 = require("./bitString");
+const cell_1 = require("./cell");
 /**
  * A partial view of a TVM cell, used for parsing data from Cells.
  */
@@ -34,6 +35,9 @@ class Slice {
      */
     getFreeBits() {
         return this.length - this.readCursor;
+    }
+    getFreeRefs() {
+        return this.refs.length - this.refCursor;
     }
     /**
      * @private
@@ -150,6 +154,18 @@ class Slice {
         const result = this.refs[this.refCursor];
         this.refCursor++;
         return result;
+    }
+    toCell() {
+        const free = this.getFreeBits();
+        const bits = this.loadBits(free);
+        const freeRefs = this.getFreeRefs();
+        const cell = new cell_1.Cell();
+        cell.bits.writeBytes(bits);
+        for (let i = 0; i < freeRefs; i++) {
+            const ref = this.loadRef();
+            cell.refs.push(ref);
+        }
+        return cell;
     }
 }
 exports.Slice = Slice;

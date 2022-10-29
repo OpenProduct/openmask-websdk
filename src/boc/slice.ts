@@ -2,6 +2,7 @@ import BN from "bn.js";
 import Address from "../utils/address";
 import { bytesToHex } from "../utils/utils";
 import { BitString } from "./bitString";
+import { Cell } from "./cell";
 
 /**
  * A partial view of a TVM cell, used for parsing data from Cells.
@@ -34,6 +35,9 @@ export class Slice {
     return this.length - this.readCursor;
   }
 
+  getFreeRefs() {
+    return this.refs.length - this.refCursor;
+  }
   /**
    * @private
    * @param n {number}
@@ -153,5 +157,21 @@ export class Slice {
     const result = this.refs[this.refCursor];
     this.refCursor++;
     return result;
+  }
+
+  toCell(): Cell {
+    const free = this.getFreeBits();
+    const bits = this.loadBits(free);
+
+    const freeRefs = this.getFreeRefs();
+
+    const cell = new Cell();
+    cell.bits.writeBytes(bits);
+
+    for (let i = 0; i < freeRefs; i++) {
+      const ref = this.loadRef();
+      cell.refs.push(ref);
+    }
+    return cell;
   }
 }
