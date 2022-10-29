@@ -1,6 +1,4 @@
-export * from "./boc/beingCell";
-export * from "./boc/bitString";
-export * from "./boc/cell";
+export * from "./boc";
 export * from "./contract/contract";
 export * from "./contract/dns/dns";
 export * from "./contract/dns/utils";
