@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import { Cell } from "../../boc/cell";
-import { bytesToBase64, bytesToHex, sha256 } from "../../utils/utils";
+import { bytesToBase64, bytesToHex, sha256_sync } from "../../utils/utils";
 import { parseAddress } from "../token/nft/utils";
 export const DNS_CATEGORY_NEXT_RESOLVER = "dns_next_resolver"; // Smart Contract address
 export const DNS_CATEGORY_WALLET = "wallet"; // Smart Contract address
@@ -9,11 +9,11 @@ export const DNS_CATEGORY_SITE = "site"; // ADNL address
  * @param category  {string | undefined}
  * @return  {BN}
  */
-export const categoryToBN = async (category) => {
+export const categoryToBN = (category) => {
     if (!category)
         return new BN(0); // all categories
     const categoryBytes = new TextEncoder().encode(category);
-    const categoryHash = new Uint8Array(await sha256(categoryBytes));
+    const categoryHash = new Uint8Array(sha256_sync(categoryBytes));
     return new BN(bytesToHex(categoryHash), 16);
 };
 /**

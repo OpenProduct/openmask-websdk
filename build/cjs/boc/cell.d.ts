@@ -79,13 +79,13 @@ export class Cell {
      */
     getDataWithDescriptors(): Uint8Array;
     /**
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
-    getRepr(): Promise<Uint8Array>;
+    getRepr(): Uint8Array;
     /**
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
-    hash(): Promise<Uint8Array>;
+    hash(): Uint8Array;
     /**
      * Recursively prints cell's content like Fift
      * @return  {string}

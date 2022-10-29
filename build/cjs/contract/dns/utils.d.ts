@@ -9,7 +9,7 @@ export declare const DNS_CATEGORY_SITE = "site";
  * @param category  {string | undefined}
  * @return  {BN}
  */
-export declare const categoryToBN: (category: string | undefined) => Promise<BN>;
+export declare const categoryToBN: (category: string | undefined) => BN;
 /**
  * @param smartContractAddress   {Address}
  * @return {Cell}

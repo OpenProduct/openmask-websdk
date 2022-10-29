@@ -111,9 +111,9 @@ class Cell {
         return (0, utils_1.concatBytes)((0, utils_1.concatBytes)(d1, d2), tuBits);
     }
     /**
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
-    async getRepr() {
+    getRepr() {
         const reprArray = [];
         reprArray.push(this.getDataWithDescriptors());
         for (let k in this.refs) {
@@ -122,7 +122,7 @@ class Cell {
         }
         for (let k in this.refs) {
             const i = this.refs[k];
-            reprArray.push(await i.hash());
+            reprArray.push(i.hash());
         }
         let x = new Uint8Array();
         for (let k in reprArray) {
@@ -132,10 +132,10 @@ class Cell {
         return x;
     }
     /**
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
-    async hash() {
-        return new Uint8Array(await (0, utils_1.sha256)(await this.getRepr()));
+    hash() {
+        return new Uint8Array((0, utils_1.sha256_sync)(this.getRepr()));
     }
     /**
      * Recursively prints cell's content like Fift

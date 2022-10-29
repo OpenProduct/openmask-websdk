@@ -15,11 +15,11 @@ exports.DNS_CATEGORY_SITE = "site"; // ADNL address
  * @param category  {string | undefined}
  * @return  {BN}
  */
-const categoryToBN = async (category) => {
+const categoryToBN = (category) => {
     if (!category)
         return new bn_js_1.default(0); // all categories
     const categoryBytes = new TextEncoder().encode(category);
-    const categoryHash = new Uint8Array(await (0, utils_1.sha256)(categoryBytes));
+    const categoryHash = new Uint8Array((0, utils_1.sha256_sync)(categoryBytes));
     return new bn_js_1.default((0, utils_1.bytesToHex)(categoryHash), 16);
 };
 exports.categoryToBN = categoryToBN;

@@ -5,7 +5,7 @@ import {
   crc32c,
   hexToBytes,
   readNBytesUIntFromArray,
-  sha256,
+  sha256_sync,
 } from "../utils/utils";
 import { BitString } from "./bitString";
 
@@ -129,9 +129,9 @@ export class Cell {
   }
 
   /**
-   * @return {Promise<Uint8Array>}
+   * @return {Uint8Array}
    */
-  async getRepr() {
+  getRepr() {
     const reprArray = [];
 
     reprArray.push(this.getDataWithDescriptors());
@@ -141,7 +141,7 @@ export class Cell {
     }
     for (let k in this.refs) {
       const i = this.refs[k];
-      reprArray.push(await i.hash());
+      reprArray.push(i.hash());
     }
     let x = new Uint8Array();
     for (let k in reprArray) {
@@ -152,10 +152,10 @@ export class Cell {
   }
 
   /**
-   * @return {Promise<Uint8Array>}
+   * @return {Uint8Array}
    */
-  async hash() {
-    return new Uint8Array(await sha256(await this.getRepr()));
+  hash() {
+    return new Uint8Array(sha256_sync(this.getRepr()));
   }
 
   /**

@@ -1,4 +1,4 @@
-import { bytesToHex, compareBytes, concatBytes, crc32c, hexToBytes, readNBytesUIntFromArray, sha256, } from "../utils/utils";
+import { bytesToHex, compareBytes, concatBytes, crc32c, hexToBytes, readNBytesUIntFromArray, sha256_sync, } from "../utils/utils";
 import { BitString } from "./bitString";
 const reachBocMagicPrefix = hexToBytes("B5EE9C72");
 const leanBocMagicPrefix = hexToBytes("68ff65f3");
@@ -108,9 +108,9 @@ export class Cell {
         return concatBytes(concatBytes(d1, d2), tuBits);
     }
     /**
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
-    async getRepr() {
+    getRepr() {
         const reprArray = [];
         reprArray.push(this.getDataWithDescriptors());
         for (let k in this.refs) {
@@ -119,7 +119,7 @@ export class Cell {
         }
         for (let k in this.refs) {
             const i = this.refs[k];
-            reprArray.push(await i.hash());
+            reprArray.push(i.hash());
         }
         let x = new Uint8Array();
         for (let k in reprArray) {
@@ -129,10 +129,10 @@ export class Cell {
         return x;
     }
     /**
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
-    async hash() {
-        return new Uint8Array(await sha256(await this.getRepr()));
+    hash() {
+        return new Uint8Array(sha256_sync(this.getRepr()));
     }
     /**
      * Recursively prints cell's content like Fift

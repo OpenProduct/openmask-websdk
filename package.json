@@ -1,6 +1,6 @@
 {
   "name": "@openproduct/web-sdk",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "OpenMask Web - TypeScript Browser SDK for TON blockchain",
   "main": "build/esnext/index.js",
   "types": "build/esnext/index.d.ts",
@@ -30,6 +30,7 @@
   "dependencies": {
     "bn.js": "4.11.6",
     "ethjs-unit": "0.1.6",
+    "jssha": "^3.3.0",
     "tweetnacl": "1.0.3"
   },
   "devDependencies": {

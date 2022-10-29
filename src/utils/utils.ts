@@ -1,15 +1,23 @@
 import BN from "bn.js";
+import jsSHA from "jssha";
 import nacl from "tweetnacl";
 
 const ethunit = require("ethjs-unit");
 
-/**
- *
- * @param bytes {Uint8Array}
- * @return  {Promise<ArrayBuffer>}
- */
-export function sha256(bytes: Uint8Array) {
-  return crypto.subtle.digest("SHA-256", bytes);
+// /**
+//  *
+//  * @param bytes {Uint8Array}
+//  * @return  {Promise<ArrayBuffer>}
+//  */
+// export function sha256(bytes: Uint8Array) {
+//   return crypto.subtle.digest("SHA-256", bytes);
+// }
+
+export function sha256_sync(bytes: Uint8Array) {
+  const hasher = new jsSHA("SHA-256", "HEX");
+  hasher.update(bytes);
+  let hex = hasher.getHash("HEX");
+  return hexToBytes(hex);
 }
 
 /**
