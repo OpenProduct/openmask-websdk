@@ -1,4 +1,4 @@
-export function moveToTheEnd(indexHashmap: any, topologicalOrderArray: any, target: any): Promise<void>;
+export function moveToTheEnd(indexHashmap: any, topologicalOrderArray: any, target: any): void;
 /**
  * @param cell  {Cell}
  * @param topologicalOrderArray array of pairs: cellHash: Uint8Array, cell: Cell, ...
@@ -97,16 +97,16 @@ export class Cell {
      * @param hash_crc32?  {boolean}
      * @param has_cache_bits?  {boolean}
      * @param flags? {number}
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
-    toBoc(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): Promise<Uint8Array>;
-    toHex(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): Promise<string>;
-    toBase64(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): Promise<any>;
+    toBoc(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): Uint8Array;
+    toHex(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): string;
+    toBase64(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): any;
     /**
      * @private
      * @param cellsIndex
      * @param refSize
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
     private serializeForBoc;
     /**
@@ -121,5 +121,6 @@ export class Cell {
      * @return {[[], {}]} topologicalOrderArray and indexHashmap
      */
     private treeWalk;
+    beginParse(): any;
 }
 import { BitString } from "./bitString";

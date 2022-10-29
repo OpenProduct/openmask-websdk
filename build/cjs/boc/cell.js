@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deserializeBoc = exports.deserializeCellData = exports.parseBocHeader = exports.treeWalk = exports.moveToTheEnd = exports.Cell = void 0;
+const slice_1 = require("slice");
 const utils_1 = require("../utils/utils");
 const bitString_1 = require("./bitString");
 const reachBocMagicPrefix = (0, utils_1.hexToBytes)("B5EE9C72");
@@ -169,11 +170,11 @@ class Cell {
      * @param hash_crc32?  {boolean}
      * @param has_cache_bits?  {boolean}
      * @param flags? {number}
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
-    async toBoc(has_idx = true, hash_crc32 = true, has_cache_bits = false, flags = 0) {
+    toBoc(has_idx = true, hash_crc32 = true, has_cache_bits = false, flags = 0) {
         const root_cell = this;
-        const allcells = await root_cell.treeWalk();
+        const allcells = root_cell.treeWalk();
         const topologicalOrder = allcells[0];
         const cellsIndex = allcells[1];
         const cells_num = topologicalOrder.length;
@@ -185,8 +186,7 @@ class Cell {
             //TODO it should be async map or async for
             sizeIndex.push(full_size);
             full_size =
-                full_size +
-                    (await cell_info[1].bocSerializationSize(cellsIndex, s_bytes));
+                full_size + cell_info[1].bocSerializationSize(cellsIndex, s_bytes);
         }
         const offset_bits = full_size.toString(2).length; // Minimal number of bits to offset/len (unused?)
         const offset_bytes = Math.max(Math.ceil(offset_bits / 8), 1);
@@ -206,7 +206,7 @@ class Cell {
         }
         for (let cell_info of topologicalOrder) {
             //TODO it should be async map or async for
-            const refcell_ser = await cell_info[1].serializeForBoc(cellsIndex, s_bytes);
+            const refcell_ser = cell_info[1].serializeForBoc(cellsIndex, s_bytes);
             serialization.writeBytes(refcell_ser);
         }
         let ser_arr = serialization.getTopUppedArray();
@@ -215,21 +215,21 @@ class Cell {
         }
         return ser_arr;
     }
-    async toHex(has_idx = true, hash_crc32 = true, has_cache_bits = false, flags = 0) {
-        const boc = await this.toBoc(has_idx, hash_crc32, has_cache_bits, flags);
+    toHex(has_idx = true, hash_crc32 = true, has_cache_bits = false, flags = 0) {
+        const boc = this.toBoc(has_idx, hash_crc32, has_cache_bits, flags);
         return (0, utils_1.bytesToHex)(boc);
     }
-    async toBase64(has_idx = true, hash_crc32 = true, has_cache_bits = false, flags = 0) {
-        const boc = await this.toBoc(has_idx, hash_crc32, has_cache_bits, flags);
+    toBase64(has_idx = true, hash_crc32 = true, has_cache_bits = false, flags = 0) {
+        const boc = this.toBoc(has_idx, hash_crc32, has_cache_bits, flags);
         return bytesToBase64(boc);
     }
     /**
      * @private
      * @param cellsIndex
      * @param refSize
-     * @return {Promise<Uint8Array>}
+     * @return {Uint8Array}
      */
-    async serializeForBoc(cellsIndex, refSize) {
+    serializeForBoc(cellsIndex, refSize) {
         const reprArray = [];
         reprArray.push(this.getDataWithDescriptors());
         if (this.isExplicitlyStoredHashes()) {
@@ -237,7 +237,7 @@ class Cell {
         }
         for (let k in this.refs) {
             const i = this.refs[k];
-            const refHash = await i.hash();
+            const refHash = i.hash();
             const refIndexInt = cellsIndex[refHash];
             let refIndexHex = refIndexInt.toString(16);
             if (refIndexHex.length % 2) {
@@ -259,19 +259,23 @@ class Cell {
      * @param refSize
      * @return {Promise<number>}
      */
-    async bocSerializationSize(cellsIndex, refSize) {
-        return (await this.serializeForBoc(cellsIndex, refSize)).length;
+    bocSerializationSize(cellsIndex, refSize) {
+        return this.serializeForBoc(cellsIndex, refSize).length;
     }
     /**
      * @private
      * @return {[[], {}]} topologicalOrderArray and indexHashmap
      */
-    async treeWalk() {
+    treeWalk() {
         return treeWalk(this, [], {});
+    }
+    beginParse() {
+        const refs = this.refs.map((ref) => ref.beginParse());
+        return new slice_1.Slice(this.bits.array.slice(), this.bits.length, refs);
     }
 }
 exports.Cell = Cell;
-async function moveToTheEnd(indexHashmap, topologicalOrderArray, target) {
+function moveToTheEnd(indexHashmap, topologicalOrderArray, target) {
     const targetIndex = indexHashmap[target];
     for (let h in indexHashmap) {
         if (indexHashmap[h] > targetIndex) {
@@ -282,7 +286,7 @@ async function moveToTheEnd(indexHashmap, topologicalOrderArray, target) {
     const data = topologicalOrderArray.splice(targetIndex, 1)[0];
     topologicalOrderArray.push(data);
     for (let subCell of data[1].refs) {
-        await moveToTheEnd(indexHashmap, topologicalOrderArray, await subCell.hash());
+        moveToTheEnd(indexHashmap, topologicalOrderArray, subCell.hash());
     }
 }
 exports.moveToTheEnd = moveToTheEnd;
@@ -292,14 +296,14 @@ exports.moveToTheEnd = moveToTheEnd;
  * @param indexHashmap cellHash: Uint8Array -> cellIndex: number
  * @return {[[], {}]} topologicalOrderArray and indexHashmap
  */
-async function treeWalk(cell, topologicalOrderArray, indexHashmap, parentHash = null) {
-    const cellHash = await cell.hash();
+function treeWalk(cell, topologicalOrderArray, indexHashmap, parentHash = null) {
+    const cellHash = cell.hash();
     if (cellHash in indexHashmap) {
         // Duplication cell
         //it is possible that already seen cell is a children of more deep cell
         if (parentHash) {
             if (indexHashmap[parentHash] > indexHashmap[cellHash]) {
-                await moveToTheEnd(indexHashmap, topologicalOrderArray, cellHash);
+                moveToTheEnd(indexHashmap, topologicalOrderArray, cellHash);
             }
         }
         return [topologicalOrderArray, indexHashmap];
@@ -307,7 +311,7 @@ async function treeWalk(cell, topologicalOrderArray, indexHashmap, parentHash = 
     indexHashmap[cellHash] = topologicalOrderArray.length;
     topologicalOrderArray.push([cellHash, cell]);
     for (let subCell of cell.refs) {
-        const res = await treeWalk(subCell, topologicalOrderArray, indexHashmap, cellHash);
+        const res = treeWalk(subCell, topologicalOrderArray, indexHashmap, cellHash);
         topologicalOrderArray = res[0];
         indexHashmap = res[1];
     }
