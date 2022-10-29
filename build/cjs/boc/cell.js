@@ -219,6 +219,10 @@ class Cell {
         const boc = await this.toBoc(has_idx, hash_crc32, has_cache_bits, flags);
         return (0, utils_1.bytesToHex)(boc);
     }
+    async toBase64(has_idx = true, hash_crc32 = true, has_cache_bits = false, flags = 0) {
+        const boc = await this.toBoc(has_idx, hash_crc32, has_cache_bits, flags);
+        return bytesToBase64(boc);
+    }
     /**
      * @private
      * @param cellsIndex

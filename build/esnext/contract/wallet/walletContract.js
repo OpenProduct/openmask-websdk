@@ -1,6 +1,8 @@
-import BN from "bn.js";
 import nacl from "tweetnacl";
 import { Cell } from "../../boc/cell";
+import { CellMessage } from "../../message/cellMessage";
+import { CommonMessageInfo } from "../../message/commonMessageInfo";
+import { InternalMessage } from "../../message/internalMessage";
 import Address from "../../utils/address";
 import { Contract } from "../contract";
 /**
@@ -125,18 +127,7 @@ export class WalletContract extends Contract {
             data,
         };
     }
-    /**
-     * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
-     * @param address   {Address | string}
-     * @param amount    {BN | number} in nanograms
-     * @param seqno {number}
-     * @param payload?   {string | Uint8Array | Cell}
-     * @param sendMode?  {number}
-     * @param dummySignature?    {boolean}
-     * @param stateInit? {Cell}
-     * @return {Promise<ExternalMessage>}
-     */
-    async createTransferMessage(secretKey, address, amount, seqno, payload = "", sendMode = 3, dummySignature = false, stateInit = null) {
+    createPayloadCell = (payload = "") => {
         let payloadCell = new Cell();
         if (payload) {
             if (typeof payload !== "string" && "refs" in payload) {
@@ -153,11 +144,36 @@ export class WalletContract extends Contract {
                 payloadCell.bits.writeBytes(payload);
             }
         }
-        const orderHeader = Contract.createInternalMessageHeader(new Address(address), new BN(amount));
-        const order = Contract.createCommonMsgInfo(orderHeader, stateInit, payloadCell);
+        return payloadCell;
+    };
+    /**
+     * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
+     * @param address   {Address | string}
+     * @param amount    {BN | number} in nanograms
+     * @param seqno {number}
+     * @param payload?   {string | Uint8Array | Cell}
+     * @param sendMode?  {number}
+     * @param dummySignature?    {boolean}
+     * @param stateInit? {Cell}
+     * @return {Promise<ExternalMessage>}
+     */
+    async createTransferMessage(secretKey, address, amount, seqno, payload = "", sendMode = 3, dummySignature = false, stateInit = null) {
+        const payloadCell = this.createPayloadCell(payload);
+        const to = new Address(address);
+        const order = new InternalMessage({
+            to,
+            value: amount,
+            bounce: to.isBounceable,
+            body: new CommonMessageInfo({
+                stateInit: stateInit ? new CellMessage(stateInit) : undefined,
+                body: new CellMessage(payloadCell),
+            }),
+        });
+        const orderCell = new Cell();
+        order.writeTo(orderCell);
         const signingMessage = this.createSigningMessage(seqno);
         signingMessage.bits.writeUint8(sendMode);
-        signingMessage.refs.push(order);
+        signingMessage.refs.push(orderCell);
         return this.createExternalMessage(signingMessage, secretKey, seqno, dummySignature);
     }
 }

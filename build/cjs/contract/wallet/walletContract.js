@@ -4,9 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WalletContract = void 0;
-const bn_js_1 = __importDefault(require("bn.js"));
 const tweetnacl_1 = __importDefault(require("tweetnacl"));
 const cell_1 = require("../../boc/cell");
+const cellMessage_1 = require("../../message/cellMessage");
+const commonMessageInfo_1 = require("../../message/commonMessageInfo");
+const internalMessage_1 = require("../../message/internalMessage");
 const address_1 = __importDefault(require("../../utils/address"));
 const contract_1 = require("../contract");
 /**
@@ -131,18 +133,7 @@ class WalletContract extends contract_1.Contract {
             data,
         };
     }
-    /**
-     * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
-     * @param address   {Address | string}
-     * @param amount    {BN | number} in nanograms
-     * @param seqno {number}
-     * @param payload?   {string | Uint8Array | Cell}
-     * @param sendMode?  {number}
-     * @param dummySignature?    {boolean}
-     * @param stateInit? {Cell}
-     * @return {Promise<ExternalMessage>}
-     */
-    async createTransferMessage(secretKey, address, amount, seqno, payload = "", sendMode = 3, dummySignature = false, stateInit = null) {
+    createPayloadCell = (payload = "") => {
         let payloadCell = new cell_1.Cell();
         if (payload) {
             if (typeof payload !== "string" && "refs" in payload) {
@@ -159,11 +150,36 @@ class WalletContract extends contract_1.Contract {
                 payloadCell.bits.writeBytes(payload);
             }
         }
-        const orderHeader = contract_1.Contract.createInternalMessageHeader(new address_1.default(address), new bn_js_1.default(amount));
-        const order = contract_1.Contract.createCommonMsgInfo(orderHeader, stateInit, payloadCell);
+        return payloadCell;
+    };
+    /**
+     * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
+     * @param address   {Address | string}
+     * @param amount    {BN | number} in nanograms
+     * @param seqno {number}
+     * @param payload?   {string | Uint8Array | Cell}
+     * @param sendMode?  {number}
+     * @param dummySignature?    {boolean}
+     * @param stateInit? {Cell}
+     * @return {Promise<ExternalMessage>}
+     */
+    async createTransferMessage(secretKey, address, amount, seqno, payload = "", sendMode = 3, dummySignature = false, stateInit = null) {
+        const payloadCell = this.createPayloadCell(payload);
+        const to = new address_1.default(address);
+        const order = new internalMessage_1.InternalMessage({
+            to,
+            value: amount,
+            bounce: to.isBounceable,
+            body: new commonMessageInfo_1.CommonMessageInfo({
+                stateInit: stateInit ? new cellMessage_1.CellMessage(stateInit) : undefined,
+                body: new cellMessage_1.CellMessage(payloadCell),
+            }),
+        });
+        const orderCell = new cell_1.Cell();
+        order.writeTo(orderCell);
         const signingMessage = this.createSigningMessage(seqno);
         signingMessage.bits.writeUint8(sendMode);
-        signingMessage.refs.push(order);
+        signingMessage.refs.push(orderCell);
         return this.createExternalMessage(signingMessage, secretKey, seqno, dummySignature);
     }
 }

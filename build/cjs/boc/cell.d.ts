@@ -101,6 +101,7 @@ export class Cell {
      */
     toBoc(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): Promise<Uint8Array>;
     toHex(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): Promise<string>;
+    toBase64(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): Promise<any>;
     /**
      * @private
      * @param cellsIndex

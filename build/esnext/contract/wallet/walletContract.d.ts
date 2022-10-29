@@ -50,6 +50,7 @@ export declare class WalletContract extends Contract {
      * @return {Promise<ExternalMessage>}
      */
     createExternalMessage(signingMessage: Cell, secretKey: Uint8Array, seqno: number, dummySignature?: boolean): Promise<ExternalMessage>;
+    createPayloadCell: (payload?: string | Uint8Array | Cell) => Cell;
     /**
      * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
      * @param address   {Address | string}

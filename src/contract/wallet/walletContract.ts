@@ -1,6 +1,9 @@
 import BN from "bn.js";
 import nacl from "tweetnacl";
 import { Cell } from "../../boc/cell";
+import { CellMessage } from "../../message/cellMessage";
+import { CommonMessageInfo } from "../../message/commonMessageInfo";
+import { InternalMessage } from "../../message/internalMessage";
 import TonHttpProvider from "../../providers/httpProvider";
 import Address from "../../utils/address";
 import { Contract, ExternalMessage, Options } from "../contract";
@@ -193,6 +196,24 @@ export class WalletContract extends Contract {
     };
   }
 
+  createPayloadCell = (payload: string | Uint8Array | Cell = ""): Cell => {
+    let payloadCell = new Cell();
+    if (payload) {
+      if (typeof payload !== "string" && "refs" in payload) {
+        // is Cell
+        payloadCell = payload;
+      } else if (typeof payload === "string") {
+        if (payload.length > 0) {
+          payloadCell.bits.writeUint(0, 32);
+          payloadCell.bits.writeString(payload);
+        }
+      } else {
+        payloadCell.bits.writeBytes(payload);
+      }
+    }
+    return payloadCell;
+  };
+
   /**
    * @param secretKey {Uint8Array}  nacl.KeyPair.secretKey
    * @param address   {Address | string}
@@ -214,33 +235,25 @@ export class WalletContract extends Contract {
     dummySignature = false,
     stateInit: Cell | null = null
   ) {
-    let payloadCell = new Cell();
-    if (payload) {
-      if (typeof payload !== "string" && "refs" in payload) {
-        // is Cell
-        payloadCell = payload;
-      } else if (typeof payload === "string") {
-        if (payload.length > 0) {
-          payloadCell.bits.writeUint(0, 32);
-          payloadCell.bits.writeString(payload);
-        }
-      } else {
-        payloadCell.bits.writeBytes(payload);
-      }
-    }
+    const payloadCell = this.createPayloadCell(payload);
 
-    const orderHeader = Contract.createInternalMessageHeader(
-      new Address(address),
-      new BN(amount)
-    );
-    const order = Contract.createCommonMsgInfo(
-      orderHeader,
-      stateInit,
-      payloadCell
-    );
+    const to = new Address(address);
+    const order = new InternalMessage({
+      to,
+      value: amount,
+      bounce: to.isBounceable,
+      body: new CommonMessageInfo({
+        stateInit: stateInit ? new CellMessage(stateInit) : undefined,
+        body: new CellMessage(payloadCell),
+      }),
+    });
+
+    const orderCell = new Cell();
+    order.writeTo(orderCell);
+
     const signingMessage = this.createSigningMessage(seqno);
     signingMessage.bits.writeUint8(sendMode);
-    signingMessage.refs.push(order);
+    signingMessage.refs.push(orderCell);
 
     return this.createExternalMessage(
       signingMessage,
