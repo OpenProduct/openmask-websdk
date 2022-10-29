@@ -11,10 +11,9 @@ const ethunit = require("ethjs-unit");
 //   return crypto.subtle.digest("SHA-256", bytes);
 // }
 export function sha256_sync(bytes) {
-    const hasher = new jsSHA("SHA-256", "HEX");
+    const hasher = new jsSHA("SHA-256", "UINT8ARRAY");
     hasher.update(bytes);
-    let hex = hasher.getHash("HEX");
-    return hexToBytes(hex);
+    return hasher.getHash("ARRAYBUFFER");
 }
 /**
  * from coins to nanocoins

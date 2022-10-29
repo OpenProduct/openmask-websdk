@@ -17,10 +17,9 @@ const ethunit = require("ethjs-unit");
 //   return crypto.subtle.digest("SHA-256", bytes);
 // }
 function sha256_sync(bytes) {
-    const hasher = new jssha_1.default("SHA-256", "HEX");
+    const hasher = new jssha_1.default("SHA-256", "UINT8ARRAY");
     hasher.update(bytes);
-    let hex = hasher.getHash("HEX");
-    return hexToBytes(hex);
+    return hasher.getHash("ARRAYBUFFER");
 }
 exports.sha256_sync = sha256_sync;
 /**

@@ -1,6 +1,6 @@
 import BN from "bn.js";
 import nacl from "tweetnacl";
-export declare function sha256_sync(bytes: Uint8Array): Uint8Array;
+export declare function sha256_sync(bytes: Uint8Array): ArrayBuffer;
 /**
  * from coins to nanocoins
  * @param amount {BN | string}
