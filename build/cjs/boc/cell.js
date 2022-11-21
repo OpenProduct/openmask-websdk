@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deserializeBoc = exports.deserializeCellData = exports.parseBocHeader = exports.treeWalk = exports.moveToTheEnd = exports.Cell = void 0;
-const slice_1 = require("slice");
 const utils_1 = require("../utils/utils");
 const bitString_1 = require("./bitString");
+const slice_1 = require("./slice");
 const reachBocMagicPrefix = (0, utils_1.hexToBytes)("B5EE9C72");
 const leanBocMagicPrefix = (0, utils_1.hexToBytes)("68ff65f3");
 const leanBocMagicPrefixCRC = (0, utils_1.hexToBytes)("acc3a728");

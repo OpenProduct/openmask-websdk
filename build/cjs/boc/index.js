@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./beingCell"), exports);
 __exportStar(require("./bitString"), exports);
 __exportStar(require("./cell"), exports);
+__exportStar(require("./dict/parseDict"), exports);
 __exportStar(require("./slice"), exports);

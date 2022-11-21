@@ -1,5 +1,6 @@
 import BN from "bn.js";
 import Address from "../utils/address";
+import { BitString } from "./bitString";
 import { Cell } from "./cell";
 /**
  * A partial view of a TVM cell, used for parsing data from Cells.
@@ -32,6 +33,8 @@ export declare class Slice {
      * @return {boolean}    bit value at position `n`
      */
     get(n: number): boolean;
+    readUnaryLength(): number;
+    readRemaining(): BitString;
     /**
      * @return {boolean}   read bit
      */
@@ -69,5 +72,8 @@ export declare class Slice {
      * @return {Slice}
      */
     loadRef(): Slice;
+    readCell: () => Cell;
+    readOptDict: <T>(keySize: number, extractor: (slice: Slice) => T) => Map<string, T> | null;
+    readDict: <T>(keySize: number, extractor: (slice: Slice) => T) => Map<string, T>;
     toCell(): Cell;
 }

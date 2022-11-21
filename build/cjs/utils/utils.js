@@ -3,25 +3,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.newSeed = exports.newKeyPair = exports.keyPairFromSeed = exports.readNBytesUIntFromArray = exports.base64ToBytes = exports.stringToBase64 = exports.base64toString = exports.bytesToBase64 = exports.compareBytes = exports.concatBytes = exports.crc16 = exports.crc32c = exports.stringToBytes = exports.hexToBytes = exports.bytesToHex = exports.fromNano = exports.toNano = exports.sha256_sync = void 0;
+exports.newSeed = exports.newKeyPair = exports.keyPairFromSeed = exports.readNBytesUIntFromArray = exports.base64ToBytes = exports.stringToBase64 = exports.base64toString = exports.bytesToBase64 = exports.compareBytes = exports.concatBytes = exports.crc16 = exports.crc32c = exports.stringToBytes = exports.hexToBytes = exports.bytesToHex = exports.fromNano = exports.toNano = exports.sha256_hex = exports.sha256_sync = void 0;
 const bn_js_1 = __importDefault(require("bn.js"));
 const jssha_1 = __importDefault(require("jssha"));
 const tweetnacl_1 = __importDefault(require("tweetnacl"));
 const ethunit = require("ethjs-unit");
-// /**
-//  *
-//  * @param bytes {Uint8Array}
-//  * @return  {Promise<ArrayBuffer>}
-//  */
-// export function sha256(bytes: Uint8Array) {
-//   return crypto.subtle.digest("SHA-256", bytes);
-// }
 function sha256_sync(bytes) {
     const hasher = new jssha_1.default("SHA-256", "UINT8ARRAY");
     hasher.update(bytes);
     return hasher.getHash("ARRAYBUFFER");
 }
 exports.sha256_sync = sha256_sync;
+function sha256_hex(key) {
+    const hasher = new jssha_1.default("SHA-256", "TEXT", { encoding: "UTF8" });
+    hasher.update(key);
+    return hasher.getHash("HEX");
+}
+exports.sha256_hex = sha256_hex;
 /**
  * from coins to nanocoins
  * @param amount {BN | string}

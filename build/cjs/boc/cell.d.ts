@@ -121,6 +121,7 @@ export class Cell {
      * @return {[[], {}]} topologicalOrderArray and indexHashmap
      */
     private treeWalk;
-    beginParse(): any;
+    beginParse(): Slice;
 }
 import { BitString } from "./bitString";
+import { Slice } from "./slice";

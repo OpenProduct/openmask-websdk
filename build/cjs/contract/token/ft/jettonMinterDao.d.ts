@@ -2,12 +2,17 @@ import BN from "bn.js";
 import { Cell } from "../../../boc/cell";
 import TonHttpProvider from "../../../providers/httpProvider";
 import Address from "../../../utils/address";
-export interface JettonData {
+declare const jettonMetaDataKeys: readonly ["name", "description", "image", "symbol", "image_data", "decimals"];
+declare type JettonMetaDataKeys = typeof jettonMetaDataKeys[number];
+export interface JettonContent {
+    jettonContentUri: string | null;
+    jettonContent: Partial<Record<JettonMetaDataKeys, string>> | null;
+}
+export interface JettonData extends JettonContent {
     totalSupply: BN;
     isMutable: boolean;
     adminAddress: Address | null;
     jettonContentCell: Cell;
-    jettonContentUri: string | null;
     jettonWalletCode: Cell;
 }
 export declare class JettonMinterDao {
@@ -24,3 +29,4 @@ export declare class JettonMinterDao {
      */
     getJettonWalletAddress(ownerAddress: Address): Promise<Address | null>;
 }
+export {};

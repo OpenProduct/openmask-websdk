@@ -1,6 +1,6 @@
-import { Slice } from "slice";
 import { bytesToHex, compareBytes, concatBytes, crc32c, hexToBytes, readNBytesUIntFromArray, sha256_sync, } from "../utils/utils";
 import { BitString } from "./bitString";
+import { Slice } from "./slice";
 const reachBocMagicPrefix = hexToBytes("B5EE9C72");
 const leanBocMagicPrefix = hexToBytes("68ff65f3");
 const leanBocMagicPrefixCRC = hexToBytes("acc3a728");

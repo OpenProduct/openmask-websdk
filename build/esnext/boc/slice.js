@@ -3,6 +3,7 @@ import Address from "../utils/address";
 import { bytesToHex } from "../utils/utils";
 import { BitString } from "./bitString";
 import { Cell } from "./cell";
+import { parseDict } from "./dict/parseDict";
 /**
  * A partial view of a TVM cell, used for parsing data from Cells.
  */
@@ -50,6 +51,20 @@ export class Slice {
     get(n) {
         this.checkRange(n);
         return (this.array[(n / 8) | 0] & (1 << (7 - (n % 8)))) > 0;
+    }
+    readUnaryLength() {
+        let res = 0;
+        while (this.loadBit()) {
+            res++;
+        }
+        return res;
+    }
+    readRemaining() {
+        let res = BitString.alloc(1023);
+        while (this.readCursor < this.length) {
+            res.writeBit(this.loadBit());
+        }
+        return res;
     }
     /**
      * @return {boolean}   read bit
@@ -149,6 +164,32 @@ export class Slice {
         this.refCursor++;
         return result;
     }
+    readCell = () => {
+        let first = this.loadRef();
+        if (first) {
+            return first.toCell();
+        }
+        else {
+            throw Error("No ref");
+        }
+    };
+    readOptDict = (keySize, extractor) => {
+        if (this.loadBit()) {
+            return this.readDict(keySize, extractor);
+        }
+        else {
+            return null;
+        }
+    };
+    readDict = (keySize, extractor) => {
+        let first = this.loadRef();
+        if (first) {
+            return parseDict(first, keySize, extractor);
+        }
+        else {
+            throw Error("No ref");
+        }
+    };
     toCell() {
         const free = this.getFreeBits();
         const bits = this.loadBits(free);
@@ -157,7 +198,7 @@ export class Slice {
         cell.bits.writeBytes(bits);
         for (let i = 0; i < freeRefs; i++) {
             const ref = this.loadRef();
-            cell.refs.push(ref);
+            cell.refs.push(ref.toCell());
         }
         return cell;
     }
