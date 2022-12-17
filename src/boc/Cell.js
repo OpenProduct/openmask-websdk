@@ -1,4 +1,5 @@
 import {
+  bytesToBase64,
   bytesToHex,
   compareBytes,
   concatBytes,

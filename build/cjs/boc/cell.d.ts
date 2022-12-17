@@ -101,7 +101,7 @@ export class Cell {
      */
     toBoc(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): Uint8Array;
     toHex(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): string;
-    toBase64(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): any;
+    toBase64(has_idx?: boolean, hash_crc32?: boolean, has_cache_bits?: boolean, flags?: number): string;
     /**
      * @private
      * @param cellsIndex

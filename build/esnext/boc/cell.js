@@ -1,4 +1,4 @@
-import { bytesToHex, compareBytes, concatBytes, crc32c, hexToBytes, readNBytesUIntFromArray, sha256_sync, } from "../utils/utils";
+import { bytesToBase64, bytesToHex, compareBytes, concatBytes, crc32c, hexToBytes, readNBytesUIntFromArray, sha256_sync, } from "../utils/utils";
 import { BitString } from "./bitString";
 import { Slice } from "./slice";
 const reachBocMagicPrefix = hexToBytes("B5EE9C72");

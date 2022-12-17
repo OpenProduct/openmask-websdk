@@ -53,7 +53,7 @@ export declare class Contract {
      * @protected
      * @return {Promise<{stateInit: Cell, address: Address, code: Cell, data: Cell}>}
      */
-    protected createStateInit(): Promise<{
+    createStateInit(): Promise<{
         stateInit: Cell;
         address: Address;
         code: Cell;

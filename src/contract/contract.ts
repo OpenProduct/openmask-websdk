@@ -83,7 +83,7 @@ export class Contract {
    * @protected
    * @return {Promise<{stateInit: Cell, address: Address, code: Cell, data: Cell}>}
    */
-  protected async createStateInit() {
+  public async createStateInit() {
     const codeCell = this.createCodeCell();
     const dataCell = this.createDataCell();
 
